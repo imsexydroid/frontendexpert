@@ -1,9 +1,8 @@
 import React from "react";
-import data from "./../csscc.json";
-import VideoPlayer from "./VideoPlayer";
 import { useNavigate } from "react-router-dom";
+import VideoPlayer from "./VideoPlayer";
 
-const CSSVideoPlayer = () => {
+const VideoPlayerPage = ({ data }) => {
   const navigate = useNavigate();
   return (
     <div style={{ position: "relative" }}>
@@ -27,4 +26,4 @@ const CSSVideoPlayer = () => {
   );
 };
 
-export default CSSVideoPlayer;
+export default VideoPlayerPage;

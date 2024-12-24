@@ -1,26 +1,25 @@
 import "./App.css";
-import CSSVideoPlayer from "./CSSVideoPlayer";
-import HTMLVideoPlayer from "./HTMLVideoPlayer";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import JSVideoPlayer from "./JSVideoPlayer";
-import ReactVideoPlayer from "./ReactVideoPlayer";
-import WebDevVideoPlayer from "./WebDevVideoPlayer";
 import HomePage from "./HomePage";
+import VideoPlayerPage from "./../src/VideoPlayerPage";
+import htmlData from "../htmlcc.json";
+import cssData from "../csscc.json";
+import jsData from "../jscc.json";
+import reactData from "../reactcc.json";
+import webDevData from "../webdev.json";
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/html" element={<HTMLVideoPlayer />} />
-          <Route path="/css" element={<CSSVideoPlayer />} />
-          <Route path="/js" element={<JSVideoPlayer />} />
-          <Route path="/react" element={<ReactVideoPlayer />} />
-          <Route path="/web" element={<WebDevVideoPlayer />} />
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/html" element={<VideoPlayerPage data={htmlData} />} />
+        <Route path="/css" element={<VideoPlayerPage data={cssData} />} />
+        <Route path="/js" element={<VideoPlayerPage data={jsData} />} />
+        <Route path="/react" element={<VideoPlayerPage data={reactData} />} />
+        <Route path="/web" element={<VideoPlayerPage data={webDevData} />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
