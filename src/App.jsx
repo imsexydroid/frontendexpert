@@ -7,6 +7,7 @@ import cssData from "../csscc.json";
 import jsData from "../jscc.json";
 import reactData from "../reactcc.json";
 import webDevData from "../webdev.json";
+import ComingSoon from "./ComingSoon";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/js" element={<VideoPlayerPage data={jsData} />} />
         <Route path="/react" element={<VideoPlayerPage data={reactData} />} />
         <Route path="/web" element={<VideoPlayerPage data={webDevData} />} />
+        <Route path="/question" element={<ComingSoon />} />
       </Routes>
     </BrowserRouter>
   );

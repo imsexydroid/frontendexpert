@@ -22,6 +22,9 @@ const HomePage = () => {
           <li>
             <Link to="/web">Web Dev</Link>
           </li>
+          <li>
+            <Link to="/question">Questions</Link>
+          </li>
         </ul>
       </nav>
     </div>
