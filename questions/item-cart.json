@@ -1,0 +1,67 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "HTML",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "category": "HTML",
+        "hints": [
+            "<p>These table related tags might be useful: <span>table</span>, <span>thead</span>, <span>tbody</span>, <span>tfoot</span>, <span>tr</span>, <span>th</span>, <span>td</span> and <span>caption</span>.</p>",
+            "<p>The column headers should be considered their own row, only using <span>th</span> tags rather than <span>td</span> tags.</p>",
+            "<p>Row headers, such as the \"Banana\" header should also use the <span>th</span> tag. However they should be differentiated from column headers by using the <span>scope</span> attribute.</p>"
+        ],
+        "languageToWrite": "html",
+        "name": "Item Cart",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>Implement an item cart in HTML with the following static data:</p>\n  <pre>\n+----------+-----------+--------------+\n|   Item   |   Price   |   Quantity   |\n|----------+-----------+--------------|\n|  Banana  | $1.00     | 3            |\n|  Burger  | $6.90     | 1            |\n|  Cookie  | $4.20     | 4            |\n|----------+-----------+--------------|\n|  Total   | $12.10    | 8            |\n+----------+-----------+--------------+\n</pre\n  >\n  <p>\n    Your HTML code should use a table with proper semantic markup and with\n    <b>Item Cart</b> as its caption.\n  </p>\n  <p>\n    You only need to write the HTML that would go inside of a document's\n    <span>&lt;body&gt;</span> tag; no need to worry about the\n    <span>&lt;head&gt;</span> tag, the <span>&lt;html&gt;</span> tag, or the\n    <span>&lt;!DOCTYPE&gt;</span> declaration.\n  </p>\n</div>",
+        "promptCode": {
+            "css": "table, caption {\n  background-color: grey;\n  color: white;\n  font-size: 18px;\n}"
+        },
+        "reactConfig": null,
+        "solutions": {
+            "html": [
+                "<!--\nCopyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n-->\n\n<table>\n  <caption>\n    Item Cart\n  </caption>\n  <thead>\n    <tr>\n      <th scope=\"col\">Item</th>\n      <th scope=\"col\">Price</th>\n      <th scope=\"col\">Quantity</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th scope=\"row\">Banana</th>\n      <td>$1.00</td>\n      <td>3</td>\n    </tr>\n    <tr>\n      <th scope=\"row\">Burger</th>\n      <td>$6.90</td>\n      <td>1</td>\n    </tr>\n    <tr>\n      <th scope=\"row\">Cookie</th>\n      <td>$4.20</td>\n      <td>4</td>\n    </tr>\n  </tbody>\n  <tfoot>\n    <tr>\n      <th scope=\"row\">Total</th>\n      <td>$12.10</td>\n      <td>8</td>\n    </tr>\n  </tfoot>\n</table>"
+            ]
+        },
+        "startingCode": {
+            "html": "<!-- Write your code here. -->\n\n<!-- Delete this line. -->\n<div>FrontendExpert is awesome!</div>\n"
+        },
+        "submissionStatistics": {
+            "correctCount": 6469,
+            "failureCount": 3132
+        },
+        "testHarness": {
+            "sandboxCode": "// This file is initialized with a few test cases.\n// Feel free to add, edit, or remove test cases in\n// this file as you see fit!\n\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\nconst {JSDOM} = require('jsdom');\nconst {readFileSync} = require('fs');\nconst {expect} = require('chai');\n\nconst html = readFileSync('data/index.html');\n\nlet table;\nlet caption;\nlet rows;\n\nconst resetDom = () => {\n  const dom = new JSDOM(html, {\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n\n  table = document.querySelector('table');\n  caption = document.querySelector('caption');\n  rows = document.querySelectorAll('tr');\n};\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\n\ndescribe('item cart', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  describe('caption', () => {\n    it('has correct text', () => {\n      expect(caption.textContent.trim()).to.equal('Item Cart');\n    });\n\n    it('has correct parent', () => {\n      expect(caption.parentNode).to.equal(table);\n    });\n  });\n\n  describe('body', () => {\n    it('has correct text', () => {\n      const expectedBody = [\n        ['Banana', '$1.00', '3'],\n        ['Burger', '$6.90', '1'],\n        ['Cookie', '$4.20', '4'],\n      ];\n\n      const actualBody = Array.from(rows)\n        .slice(1, 4)\n        .map(row => {\n          return Array.from(row.children).map(cell => {\n            return cell.textContent.trim();\n          });\n        });\n\n      expect(actualBody).to.deep.equal(expectedBody);\n    });\n  });\n});\n",
+            "unitTests": "/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\nconst {JSDOM} = require('jsdom');\nconst {readFileSync} = require('fs');\nconst {expect} = require('chai');\n\nconst html = readFileSync('data/index.html');\n\nlet table;\nlet caption;\nlet rows;\n\nconst resetDom = () => {\n  const dom = new JSDOM(html, {\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n\n  table = document.querySelector('table');\n  caption = document.querySelector('caption');\n  rows = document.querySelectorAll('tr');\n};\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\n\ndescribe('item cart', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  describe('caption', () => {\n    it('has correct text', () => {\n      expect(caption.textContent.trim()).to.equal('Item Cart');\n    });\n\n    it('has correct parent', () => {\n      expect(caption.parentNode).to.equal(table);\n    });\n  });\n\n  describe('column headings', () => {\n    it('have correct text', () => {\n      const expectedHeadings = ['Item', 'Price', 'Quantity'];\n\n      Array.from(rows[0].children).forEach((child, i) => {\n        expect(child.textContent.trim()).to.equal(expectedHeadings[i]);\n      });\n    });\n\n    it('have correct tags', () => {\n      Array.from(rows[0].children).forEach((child, i) => {\n        expect(child.tagName).to.equal('TH');\n      });\n    });\n\n    it('have correct semantic grouping tag', () => {\n      expect(rows[0].parentNode.tagName).to.equal('THEAD');\n    });\n  });\n\n  describe('body', () => {\n    it('has correct text', () => {\n      const expectedBody = [\n        ['Banana', '$1.00', '3'],\n        ['Burger', '$6.90', '1'],\n        ['Cookie', '$4.20', '4'],\n      ];\n\n      const actualBody = Array.from(rows)\n        .slice(1, 4)\n        .map(row => {\n          return Array.from(row.children).map(cell => {\n            return cell.textContent.trim();\n          });\n        });\n\n      expect(actualBody).to.deep.equal(expectedBody);\n    });\n\n    it('has correct cell tags', () => {\n      const expectedRowTagOrder = ['TH', 'TD', 'TD'];\n\n      Array.from(rows)\n        .slice(1, 4)\n        .forEach(row => {\n          const actualRowTagOrder = Array.from(row.children).map(cell => {\n            return cell.tagName;\n          });\n          expect(actualRowTagOrder).to.deep.equal(expectedRowTagOrder);\n        });\n    });\n\n    it('has correct semantic grouping tag', () => {\n      Array.from(rows)\n        .slice(1, 4)\n        .forEach(row => {\n          expect(row.parentNode.tagName).to.equal('TBODY');\n        });\n    });\n  });\n\n  describe('footer', () => {\n    it('has correct text', () => {\n      const expectedFooter = [['Total', '$12.10', '8']];\n\n      const actualFooter = Array.from(rows)\n        .slice(4)\n        .map(row => {\n          return Array.from(row.children).map(cell => {\n            return cell.textContent.trim();\n          });\n        });\n\n      expect(expectedFooter).to.deep.equal(actualFooter);\n    });\n\n    it('has correct cell tags', () => {\n      const expectedRowTagOrder = ['TH', 'TD', 'TD'];\n\n      Array.from(rows)\n        .slice(1, 4)\n        .forEach(row => {\n          const actualRowTagOrder = Array.from(row.children).map(cell => {\n            return cell.tagName;\n          });\n          expect(actualRowTagOrder).to.deep.equal(expectedRowTagOrder);\n        });\n    });\n\n    it('has correct semantic grouping tag', () => {\n      Array.from(rows)\n        .slice(4)\n        .forEach(row => {\n          expect(row.parentNode.tagName).to.equal('TFOOT');\n        });\n    });\n  });\n});\n"
+        },
+        "testStrategy": "MOCHA",
+        "uid": "item-cart",
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 6,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "647590388"
+        }
+    },
+    "difficulty": null,
+    "instructor": "Conner Ardman",
+    "name": "Item Cart",
+    "releaseDate": "2021-05-24T00:00:00Z",
+    "type": "CODING_FRONTEND",
+    "uid": "item-cart"
+}

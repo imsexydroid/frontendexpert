@@ -1,0 +1,80 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "JavaScript",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "assessmentSummary": null,
+        "category": "JavaScript",
+        "changelog": [],
+        "customInputVars": [],
+        "difficulty": 0,
+        "hints": [
+            "<p>\n  Try breaking this problem into two parts. First, find the path from the root\n  of <span>tree1</span> to <span>node1</span>. Next follow that same path in\n  <span>tree2</span> to find the corresponding node in that tree.\n</p>\n",
+            "\n<p>\n  There are two primary ways to find the path to the node. One option is to use\n  a traditional tree algorithm such as bfs or dfs. However, since DOM nodes all\n  have a <span>parentNode</span> property, it is possible to simply iterate\n  directly up the tree.\n</p>"
+        ],
+        "isLongOutput": false,
+        "isSlowExecution": false,
+        "jsonTests": [],
+        "languagesSupported": [
+            "javascript"
+        ],
+        "name": "Corresponding Node",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    Write a <span>correspondingNode</span> function that takes in three DOM\n    <a\n      class=\"Link Link--fe\"\n      href=\"https://developer.mozilla.org/en-US/docs/Web/API/Element\"\n      target=\"_blank\"\n      >Elements</a\n    >. The first two parameters represent the root nodes of two different\n    DOM trees. The third parameter is a node within the first DOM tree.\n  </p>\n\n  <p>\n    <span>tree1</span> and <span>tree2</span> have identical structures, meaning\n    that every DOM node in <span>tree1</span> has the same number of children as\n    the corresponding DOM node in <span>tree2</span>.\n  </p>\n\n  <p>\n    The <span>correspondingNode</span> function should return the node in\n    <span>tree2</span> that corresponds to <span>node1</span> from\n    <span>tree1</span>. For simplicity, you can assume these trees always have\n    the same structure and thus there is always a corresponding node.\n  </p>\n\n  <h3>Sample Usage</h3>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -10px\">\n  <pre\n    class=\"line-numbers\"\n  ><code class=\"language-javascript\">const dom1 = document.createElement('div');\ndom1.innerHTML = `\n  &lt;main&gt;\n    &lt;h1&gt;Heading&lt;/h1&gt;\n    &lt;div&gt;\n      &lt;h2&gt;test1&lt;/h2&gt;\n      &lt;p&gt;test2 &lt;em&gt;emphasis&lt;/em&gt;&lt;/p&gt;\n    &lt;/div&gt;\n  &lt;/main&gt;\n`;\n\nconst dom2 = document.createElement('main');\ndom2.innerHTML = `\n  &lt;article&gt;\n    &lt;h1>Heading2&lt;/h1&gt;\n    &lt;section&gt;\n      &lt;img src=\"img.png\" alt=\"image\" /&gt;\n      &lt;h3&gt;test5 &lt;strong&gt;strong&lt;/strong&gt;&lt;/h3&gt;\n    &lt;/section&gt;\n  &lt;/article&gt;\n`;\n\ncorrespondingNode(dom1, dom2, dom1); // dom2\ncorrespondingNode(dom1, dom2, dom1.querySelector('h2')); // &lt;img src=\"img.png\" alt=\"image\" /&gt;\ncorrespondingNode(dom1, dom2, dom1.querySelector('em')); // &lt;strong&gt;strong&lt;/strong&gt;</code></pre>\n</div>",
+        "releaseDate": "2022-08-03T00:00:00Z",
+        "resources": {
+            "javascript": {
+                "language": "javascript",
+                "sandboxCode": "// This file is initialized with a few test cases.\n// Feel free to add, edit, or remove test cases in\n// this file as you see fit!\n\nconst {JSDOM} = require('jsdom');\nconst chai = require('chai');\nconst {expect} = chai;\nconst {correspondingNode} = require('./program.js');\n\nconst resetDom = () => {\n  const dom = new JSDOM({\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n};\n\ndescribe('correspondingNode', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  it('returns root element if target node is the root', () => {\n    const dom1 = document.createElement('div');\n    dom1.innerHTML = `\n      <h1>Test</h1>\n      <h2>test2</h2>\n    `;\n\n    const dom2 = document.createElement('div');\n    dom2.innerHTML = `\n      <h1>Test3</h1>\n      <h2>test4</h2>\n    `;\n\n    expect(correspondingNode(dom1, dom2, dom1)).to.equal(dom2);\n  });\n\n  it('returns correct child of root element', () => {\n    const dom1 = document.createElement('div');\n    dom1.innerHTML = `\n      <h1>Test</h1>\n      <h2>test2</h2>\n    `;\n\n    const dom2 = document.createElement('div');\n    dom2.innerHTML = `\n      <h1>Test3</h1>\n      <h2>test4</h2>\n    `;\n\n    expect(correspondingNode(dom1, dom2, dom1.children[0])).to.equal(dom2.children[0]);\n    expect(correspondingNode(dom1, dom2, dom1.children[1])).to.equal(dom2.children[1]);\n  });\n});\n",
+                "solutions": [
+                    "// Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n\nfunction correspondingNode(tree1, tree2, node1) {\n  const stack1 = [tree1];\n  const stack2 = [tree2];\n\n  while (stack1.length > 0) {\n    const curr1 = stack1.pop();\n    const curr2 = stack2.pop();\n    if (curr1 === node1) {\n      return curr2;\n    }\n\n    stack1.push(...curr1.children);\n    stack2.push(...curr2.children);\n  }\n}\n\n// Do not edit the line below.\nexports.correspondingNode = correspondingNode;\n",
+                    "// Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n\nfunction correspondingNode(tree1, tree2, node1) {\n  const path = [];\n\n  let currNode = node1;\n  while (currNode !== tree1) {\n    const parent = currNode.parentNode;\n    const currIndex = Array.from(parent.children).indexOf(currNode);\n    path.push(currIndex);\n    currNode = parent;\n  }\n\n  return path.reduceRight((foundNode, childIndex) => {\n    return foundNode.children[childIndex];\n  }, tree2);\n}\n\n// Do not edit the line below.\nexports.correspondingNode = correspondingNode;\n"
+                ],
+                "solutionsDisabled": false,
+                "startingCode": "function correspondingNode(tree1, tree2, node1) {\n  // Write your code here.\n}\n\n// Do not edit the line below.\nexports.correspondingNode = correspondingNode;\n",
+                "unitTests": "const {JSDOM} = require('jsdom');\nconst chai = require('chai');\nconst {expect} = chai;\nconst {correspondingNode} = require('./program.js');\n\nconst resetDom = () => {\n  const dom = new JSDOM({\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n};\n\ndescribe('correspondingNode', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  it('returns only element for empty trees', () => {\n    const dom1 = document.createElement('div');\n    const dom2 = document.createElement('div');\n    expect(correspondingNode(dom1, dom2, dom1)).to.equal(dom2);\n  });\n\n  it('returns root element if target node is the root', () => {\n    const dom1 = document.createElement('div');\n    dom1.innerHTML = `\n      <h1>Test</h1>\n      <h2>test2</h2>\n    `;\n\n    const dom2 = document.createElement('div');\n    dom2.innerHTML = `\n      <h1>Test3</h1>\n      <h2>test4</h2>\n    `;\n\n    expect(correspondingNode(dom1, dom2, dom1)).to.equal(dom2);\n  });\n\n  it('returns correct child of root element', () => {\n    const dom1 = document.createElement('div');\n    dom1.innerHTML = `\n      <h1>Test</h1>\n      <h2>test2</h2>\n    `;\n\n    const dom2 = document.createElement('div');\n    dom2.innerHTML = `\n      <h1>Test3</h1>\n      <h2>test4</h2>\n    `;\n\n    expect(correspondingNode(dom1, dom2, dom1.children[0])).to.equal(dom2.children[0]);\n    expect(correspondingNode(dom1, dom2, dom1.children[1])).to.equal(dom2.children[1]);\n  });\n\n  it('returns correct element nested deeply', () => {\n    const dom1 = document.createElement('div');\n    dom1.innerHTML = `\n      <div>\n        <div>\n          <h1>test1</h1>\n          <h2>test2</h2>\n        </div>\n        <div>\n          <h1>test3</h1>\n          <h2>test4</h2>\n        </div>\n      </div>\n    `;\n\n    const dom2 = document.createElement('div');\n    dom2.innerHTML = `\n      <div>\n        <div>\n          <h1>test5</h1>\n          <h2>test6</h2>\n        </div>\n        <div>\n          <h1>test7</h1>\n          <h2>test8</h2>\n        </div>\n      </div>\n    `;\n\n    expect(correspondingNode(dom1, dom2, dom1.children[0])).to.equal(dom2.children[0]);\n    expect(correspondingNode(dom1, dom2, dom1.children[0].children[0])).to.equal(\n      dom2.children[0].children[0],\n    );\n    expect(correspondingNode(dom1, dom2, dom1.children[0].children[1])).to.equal(\n      dom2.children[0].children[1],\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelector('h1'))).to.equal(\n      dom2.querySelector('h1'),\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelectorAll('h1')[1])).to.equal(\n      dom2.querySelectorAll('h1')[1],\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelector('h2'))).to.equal(\n      dom2.querySelector('h2'),\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelectorAll('h2')[1])).to.equal(\n      dom2.querySelectorAll('h2')[1],\n    );\n  });\n\n  it('elements can use different tags', () => {\n    const dom1 = document.createElement('div');\n    dom1.innerHTML = `\n      <main>\n        <h1>Heading</h1>\n        <div>\n          <h2>test1</h2>\n          <p>test2 <em>emphasis</em></p>\n        </div>\n        <section>\n          <h2>test3</h2>\n          <div>\n            <img src=\"img.png\" alt=\"image\" />\n          </div>\n        </section>\n      </main>\n    `;\n\n    const dom2 = document.createElement('main');\n    dom2.innerHTML = `\n      <article>\n        <h1>Heading2</h1>\n        <section>\n          <h2>test4</h2>\n          <h3>test5 <strong>strong</strong></h3>\n        </section>\n        <section>\n          <img src=\"img.png\" alt=\"image\" />\n          <ul>\n            <li>List item</li>\n          </ul>\n        </section>\n      </article>\n    `;\n\n    expect(correspondingNode(dom1, dom2, dom1)).to.equal(dom2);\n    expect(correspondingNode(dom1, dom2, dom1.querySelector('main'))).to.equal(\n      dom2.querySelector('article'),\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelector('h1'))).to.equal(\n      dom2.querySelector('h1'),\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelector('div'))).to.equal(\n      dom2.querySelector('section'),\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelector('h2'))).to.equal(\n      dom2.querySelector('h2'),\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelector('p'))).to.equal(\n      dom2.querySelector('h3'),\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelector('em'))).to.equal(\n      dom2.querySelector('strong'),\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelector('section'))).to.equal(\n      dom2.querySelectorAll('section')[1],\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelector('section h2'))).to.equal(\n      dom2.querySelector('img'),\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelector('section div'))).to.equal(\n      dom2.querySelector('ul'),\n    );\n    expect(correspondingNode(dom1, dom2, dom1.querySelector('img'))).to.equal(\n      dom2.querySelector('li'),\n    );\n  });\n});\n"
+            }
+        },
+        "spaceTime": "",
+        "submissionStatistics": {
+            "correctCount": 949,
+            "failureCount": 109
+        },
+        "testStrategy": "SANDBOX_ONLY",
+        "tests": [],
+        "uid": "corresponding-node",
+        "version": 0,
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "734854936"
+        },
+        "visualization": {
+            "inputType": null,
+            "outputType": null
+        }
+    },
+    "difficulty": 0,
+    "instructor": "Conner Ardman",
+    "name": "Corresponding Node",
+    "releaseDate": "2022-08-03T00:00:00Z",
+    "type": "CODING_STANDARD",
+    "uid": "corresponding-node"
+}

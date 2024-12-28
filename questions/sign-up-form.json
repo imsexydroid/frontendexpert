@@ -1,0 +1,67 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "HTML",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "category": "HTML",
+        "hints": [
+            "<p>All of these inputs can use the <span>input</span> tag, with different <span>type</span> attributes to determine the input type.</p>",
+            "<p>A <span>required</span> boolean attribute can be used for required form inputs.</p>",
+            "<p>A <span>button</span> tag or an <span>input</span> tag with <span>type=\"submit\"</span> will automatically submit their parent forms.</p>"
+        ],
+        "languageToWrite": "html",
+        "name": "Sign-Up Form",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    Implement a sign-up form in HTML with the following six input fields, each\n    with an appropriate label:\n  </p>\n  <ol>\n    <li><b>Username</b>, a required text input field</li>\n    <li><b>Password</b>, a required password input field</li>\n    <li><b>Email</b>, a required email input field</li>\n    <li><b>Phone Number</b>, an optional telephone input field</li>\n    <li><b>Date of Birth</b>, an optional date-picker input field</li>\n    <li><b>I agree to the TOS</b>, a required checkbox input field</li>\n  </ol>\n  <p>\n    There should also be a <b>Sign Up</b> button at the bottom of the form. When\n    clicked on (and if all required fields have been filled), the button should\n    submit the form using default browser behavior.\n  </p>\n  <p>\n    Note that submitting the form in your <b>Browser Output</b> or in the\n    <b>Expected Output</b> will result in a broken page being displayed; this is\n    normal behavior, since these outputs are rendered in iframes.\n  </p>\n  <p>\n    You only need to write the HTML that would go inside of a document's\n    <span>&lt;body&gt;</span> tag; no need to worry about the\n    <span>&lt;head&gt;</span> tag, the <span>&lt;html&gt;</span> tag, or the\n    <span>&lt;!DOCTYPE&gt;</span> declaration.\n  </p>\n</div>",
+        "promptCode": {
+            "css": "form {\n  background-color: lightgrey;\n  font-size: 18px;\n}"
+        },
+        "reactConfig": null,
+        "solutions": {
+            "html": [
+                "<!--\nCopyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n-->\n\n<form>\n  <label for=\"username\">Username:</label>\n  <input type=\"text\" id=\"username\" required />\n\n  <label for=\"password\">Password:</label>\n  <input type=\"password\" id=\"password\" required />\n\n  <label for=\"email\">Email:</label>\n  <input type=\"email\" id=\"email\" required />\n\n  <label for=\"number\">Phone Number:</label>\n  <input type=\"tel\" id=\"number\" />\n\n  <label for=\"birthday\">Date of Birth:</label>\n  <input type=\"date\" id=\"birthday\" />\n\n  <label for=\"tos\">I agree to the TOS</label>\n  <input type=\"checkbox\" id=\"tos\" required />\n\n  <button>Sign Up</button>\n</form>"
+            ]
+        },
+        "startingCode": {
+            "html": "<!-- Write your code here. -->\n\n<!-- Delete this line. -->\n<div>FrontendExpert is awesome!</div>\n"
+        },
+        "submissionStatistics": {
+            "correctCount": 7809,
+            "failureCount": 16594
+        },
+        "testHarness": {
+            "sandboxCode": "// This file is initialized with a few test cases.\n// Feel free to add, edit, or remove test cases in\n// this file as you see fit!\n\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\nconst {JSDOM} = require('jsdom');\nconst {readFileSync} = require('fs');\nconst {expect} = require('chai');\n\nconst html = readFileSync('data/index.html');\n\nlet inputs;\nlet labels;\n\nconst resetDom = () => {\n  const dom = new JSDOM(html, {\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n\n  inputs = document.querySelectorAll('input');\n  labels = document.querySelectorAll('label');\n};\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\n\nconst EXPECTED_LABELS = [\n  'Username:',\n  'Password:',\n  'Email:',\n  'Phone Number:',\n  'Date of Birth:',\n  'I agree to the TOS',\n];\n\ndescribe('sign-up form', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  describe('labels', () => {\n    it('have the correct text content', () => {\n      labels.forEach((label, i) => {\n        expect(label.textContent.trim()).to.equal(EXPECTED_LABELS[i]);\n      });\n    });\n  });\n\n  describe('inputs', () => {\n    it('username field has the correct attributes', () => {\n      const input = inputs[0];\n      expect(input.type).to.equal('text');\n      expect(input.hasAttribute('required')).to.be.true;\n    });\n  });\n});\n",
+            "unitTests": "/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\nconst {JSDOM} = require('jsdom');\nconst {readFileSync} = require('fs');\nconst {expect} = require('chai');\n\nconst html = readFileSync('data/index.html');\n\nlet inputs;\nlet labels;\n\nconst resetDom = () => {\n  const dom = new JSDOM(html, {\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n\n  inputs = document.querySelectorAll('input');\n  labels = document.querySelectorAll('label');\n};\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\n\nconst EXPECTED_LABELS = [\n  'Username:',\n  'Password:',\n  'Email:',\n  'Phone Number:',\n  'Date of Birth:',\n  'I agree to the TOS',\n];\n\ndescribe('sign-up form', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  describe('labels', () => {\n    it('have the correct text content', () => {\n      labels.forEach((label, i) => {\n        expect(label.textContent.trim()).to.equal(EXPECTED_LABELS[i]);\n      });\n    });\n\n    it('are associated with correct inputs', () => {\n      inputs.forEach((input, i) => {\n        const associatedLabels = input.labels;\n        if (i >= 6) {\n          // If using a 6th input as a submit button, no label is needed.\n          expect(associatedLabels.length).to.equal(0);\n        } else {\n          expect(associatedLabels.length).to.equal(1);\n          expect(associatedLabels[0].textContent.trim()).to.equal(EXPECTED_LABELS[i]);\n        }\n      });\n    });\n  });\n\n  describe('inputs', () => {\n    it('username field has the correct attributes', () => {\n      const input = inputs[0];\n      expect(input.type).to.equal('text');\n      expect(input.hasAttribute('required')).to.be.true;\n    });\n\n    it('password field has the correct attributes', () => {\n      const input = inputs[1];\n      expect(input.type).to.equal('password');\n      expect(input.hasAttribute('required')).to.be.true;\n    });\n\n    it('email field has the correct attributes', () => {\n      const input = inputs[2];\n      expect(input.type).to.equal('email');\n      expect(input.hasAttribute('required')).to.be.true;\n    });\n\n    it('phone number field has the correct attributes', () => {\n      const input = inputs[3];\n      expect(input.type).to.equal('tel');\n      expect(input.hasAttribute('required')).to.be.false;\n    });\n\n    it('date of birth field has the correct attributes', () => {\n      const input = inputs[4];\n      expect(input.type).to.equal('date');\n      expect(input.hasAttribute('required')).to.be.false;\n    });\n\n    it('terms of service field has the correct attributes', () => {\n      const input = inputs[5];\n      expect(input.type).to.equal('checkbox');\n      expect(input.hasAttribute('required')).to.be.true;\n    });\n\n    it('sign up button has the correct attributes', () => {\n      const button = document.querySelector('button');\n      if (button != null) {\n        expect(button.textContent.trim()).to.equal('Sign Up');\n      } else {\n        const input = inputs[6];\n        expect(input.type).to.equal('submit');\n        expect(input.value).to.equal('Sign Up');\n      }\n    });\n  });\n\n  describe('form', () => {\n    it('contains all of the inputs', () => {\n      const form = document.querySelector('form');\n      expect(form.elements.length).to.equal(7);\n    });\n  });\n});\n"
+        },
+        "testStrategy": "MOCHA",
+        "uid": "sign-up-form",
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 10,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "647611974"
+        }
+    },
+    "difficulty": null,
+    "instructor": "Conner Ardman",
+    "name": "Sign-Up Form",
+    "releaseDate": "2021-05-24T00:00:00Z",
+    "type": "CODING_FRONTEND",
+    "uid": "sign-up-form"
+}

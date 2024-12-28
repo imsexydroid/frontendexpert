@@ -1,0 +1,83 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "JavaScript",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "assessmentSummary": null,
+        "category": "JavaScript",
+        "changelog": [],
+        "customInputVars": [],
+        "difficulty": 0,
+        "hints": [
+            "<p>\n  The <span>Date.now()</span> function can be used to get the current time as milliseconds\n  since 1970. Can you use this method to keep track of how much time has elapsed\n  since the last call to the <span>callback</span> function?\n</p>\n",
+            "\n<p>\n  <span>setTimeout</span> can be used to delay execution of the <span>callback</span> function.\n  For example, <span>setTimeout(callback, 1000)</span> would call the <span>callback</span>\n  after one second.\n</p>\n",
+            "\n<p>\n  <span>setTimeout</span> returns an ID that can be passed to the <span>clearTimeout</span>\n  function to stop the callback from running. This can be combined with another call to\n  <span>setTimeout</span> to reset a timeout.\n</p>\n",
+            "\n<p>\n  <span>setTimeout</span> executes code in a different context, and thus it loses\n  the reference to <span>this</span> by default. How can you ensure the <span>callback</span> is\n  executed with the expected <span>this</span> context?\n</p>\n",
+            "\n<p>\n  The <span>call</span> or <span>apply</span> method can be used to call a function\n  with a specific <span>this</span> context. For example,\n  <span>func.apply(obj, args)</span> would call <span>func</span> with <span>obj</span>\n  bound to <span>this</span> and the <span>args</span> array passed as arguments.\n</p>\n",
+            "\n<p>\n  Since functions are just objects, methods can be added to them just like any\n  other object. For example <span>myFunc.foo = function() {}</span> would add\n  a <span>foo</span> method to <span>myFunc</span>.\n</p>"
+        ],
+        "isLongOutput": false,
+        "isSlowExecution": false,
+        "jsonTests": [],
+        "languagesSupported": [
+            "javascript"
+        ],
+        "name": "Throttle",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    Write a <span>throttle</span> function that takes in a required\n    <span>callback</span> function and a required <span>delay</span> in\n    milliseconds.\n  </p>\n  <p>\n    Calling <span>throttle(callback, delay)</span> should return a new\n    \"throttled\" version of the callback function, which takes in the same\n    parameters as the callback, and which, when executed, should call the\n    callback function a maximum of one time per <span>delay</span> interval.\n  </p>\n  <p>\n    The first time the throttled function is called, the underlying callback\n    should run immediately. If the throttled function is called again before the\n    <span>delay</span> has passed, the next call to the underlying callback\n    should be scheduled for <span>delay</span> milliseconds after the last call\n    to the callback. If the throttled function is called multiple times in a\n    <span>delay</span> interval, the arguments from the last call should be\n    used.\n  </p>\n  <p>\n    For example, repeatedly and continuously calling a throttled function which\n    had a delay of 3000ms would call the underlying callback function exactly\n    once every 3 seconds.\n  </p>\n  <p>\n    The <span>throttle</span> function should also add a\n    <span>cancel</span> method to the throttled function (remember, functions\n    are just objects). When this method is called, any scheduled callback should\n    be cancelled.\n  </p>\n  <p>\n    Note that the underlying callback functions should have the\n    <span>this</span> context of the throttled-function callers. For example, in\n    the following code snippet, the underlying callback should be called with\n    the <span>this</span> context of the <span>object</span>:\n  </p>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -15px\">\n  <pre class=\"line-numbers\"><code class=\"language-javascript\">const object = {};\nobject.throttled = throttle(someCallback, 1000);\nobject.throttled();</code></pre>\n</div>\n<div class=\"html\">\n  <p>\n    You can assume that the JavaScript timing functions are accurate enough for\n    this question (no need to worry about timeouts not firing at exact times).\n    You also don't need to save the return value of the throttled function; it\n    can return <span>undefined</span>.\n  </p>\n  <h3>Sample Usage #1</h3>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -10px\">\n  <pre\n    class=\"line-numbers\"\n  ><code class=\"language-javascript\">const throttled = throttle(console.log, 3000);\ndocument.addEventListener('keypress', () => throttled(currentTime));\n\n// currentTime = 0ms - user starts typing.\n// Callback function fires immediately: logs the currentTime at the last keypress, which was 0ms.\n// currentTime = 1000ms - user stops typing.\n// currentTime = 3000ms - 3000ms have elapsed since last log.\n// Callback function fires: logs the currentTime at the last keypress, which was 1000ms.\n// currentTime = 7000ms - user starts typing.\n// Callback function fires immediately: logs the currentTime at the last keypress, which was 7000ms.\n// currentTime = 9000ms - user stops typing.\n// currentTime = 10000ms - 3000ms have elapsed since last log.\n// Callback function fires: logs the currentTime at the last keypress, which was 9000ms.</code></pre>\n</div>\n<div class=\"html\">\n  <h3>Sample Usage #2</h3>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -10px\">\n  <pre\n    class=\"line-numbers\"\n  ><code class=\"language-javascript\">const throttled = throttle(console.log, 3000);\ndocument.addEventListener('keypress', () => throttled(currentTime));\n\n// currentTime = 0ms - user starts typing.\n// Callback function fires immediately: logs the currentTime at the last keypress, which was 0ms.\n// currentTime = 1000ms - user stops typing.\n// currentTime = 2000ms - throttled.cancel() is called.\n// currentTime = 4000ms - user starts typing.\n// Callback function fires immediately: logs the currentTime at the last keypress, which was 4000ms.\n// currentTime = 5000ms - user stops typing; then throttled.cancel() is called.\n// currentTime = 7000ms - user starts typing.\n// Callback function fires immediately: logs the currentTime at the last keypress, which was 7000ms.\n// currentTime = 8000ms - user stops typing.\n// currentTime = 9000ms - throttled.cancel() is called.</code></pre>\n</div>",
+        "releaseDate": "2021-12-15T00:00:00Z",
+        "resources": {
+            "javascript": {
+                "language": "javascript",
+                "sandboxCode": "// This file is initialized with a few test cases.\n// Feel free to add, edit, or remove test cases in\n// this file as you see fit!\n\nconst chai = require('chai');\nconst spies = require('chai-spies');\nconst FakeTimers = require('@sinonjs/fake-timers');\n\nconst clock = FakeTimers.install({\n  now: Date.now(),\n});\n\nchai.use(spies);\nconst spy = () => chai.spy(() => {});\nconst {expect} = chai;\n\nconst {throttle} = require('./program.js');\n\ndescribe('throttle', () => {\n  beforeEach(() => {\n    clock.reset();\n  });\n\n  describe('calling a throttled function once', () => {\n    it('calls the callback immediately', () => {\n      const callback = spy();\n      const throttled = throttle(callback, 1000);\n\n      throttled();\n      expect(callback).to.have.been.called.exactly(1);\n    });\n  });\n\n  describe('calling a throttled function multiple times', () => {\n    it('calls the callback immediately if the delay has passed', () => {\n      const callback = spy();\n      const throttled = throttle(callback, 1000);\n\n      throttled();\n      expect(callback).to.have.been.called.exactly(1);\n      clock.tick(1000);\n      throttled();\n      expect(callback).to.have.been.called.exactly(2);\n      clock.tick(1000);\n      throttled();\n      expect(callback).to.have.been.called.exactly(3);\n      clock.tick(1000);\n      expect(callback).to.have.been.called.exactly(3);\n    });\n  });\n\n  describe('cancel method', () => {\n    it('cancels a scheduled callback', () => {\n      const callback = spy();\n      const throttled = throttle(callback, 1000);\n\n      throttled();\n      expect(callback).to.have.been.called.exactly(1);\n\n      throttled();\n      throttled.cancel();\n      clock.tick(1000);\n      expect(callback).to.have.been.called.exactly(1);\n    });\n  });\n});\n",
+                "solutions": [
+                    "// Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n\nfunction throttle(callback, delay) {\n  let timerID;\n  let lastCalledTime = 0;\n\n  const throttledFunction = function (...args) {\n    const currentTime = Date.now();\n    const timeSinceLastCall = currentTime - lastCalledTime;\n    const delayRemaining = delay - timeSinceLastCall;\n\n    if (delayRemaining <= 0) {\n      lastCalledTime = currentTime;\n      callback.apply(this, args);\n    } else {\n      clearTimeout(timerID);\n      timerID = setTimeout(() => {\n        lastCalledTime = Date.now();\n        callback.apply(this, args);\n      }, delayRemaining);\n    }\n  };\n\n  throttledFunction.cancel = function () {\n    clearTimeout(timerID);\n  };\n\n  return throttledFunction;\n}\n\n// Do not edit the line below.\nexports.throttle = throttle;\n"
+                ],
+                "solutionsDisabled": false,
+                "startingCode": "function throttle(callback, delay) {\n  // Write your code here.\n}\n\n// Do not edit the line below.\nexports.throttle = throttle;\n",
+                "unitTests": "const chai = require('chai');\nconst spies = require('chai-spies');\nconst FakeTimers = require('@sinonjs/fake-timers');\n\nconst clock = FakeTimers.install({\n  now: Date.now(),\n});\n\nchai.use(spies);\nconst spy = () => chai.spy(() => {});\nconst {expect} = chai;\n\nconst {throttle} = require('./program.js');\n\ndescribe('throttle', () => {\n  beforeEach(() => {\n    clock.reset();\n  });\n\n  describe('calling a throttled function once', () => {\n    it('calls the callback immediately', () => {\n      const callback = spy();\n      const throttled = throttle(callback, 1000);\n\n      throttled();\n      expect(callback).to.have.been.called.exactly(1);\n    });\n\n    it(`should call the passed callback with the call's arguments`, () => {\n      const callback = spy();\n      const throttled = throttle(callback, 1000);\n\n      throttled('foo', 'bar');\n      expect(callback).to.have.been.called.with('foo', 'bar');\n    });\n\n    it('callbacks should have the `this` context of the throttled function caller', () => {\n      const object = {spy: spy()};\n      function callback() {\n        this.spy();\n      }\n      object.throttled = throttle(callback, 1000);\n\n      object.throttled();\n      clock.tick(1000);\n      expect(object.spy).to.have.been.called.exactly(1);\n    });\n  });\n\n  describe('calling a throttled function multiple times', () => {\n    it('calls the callback immediately if the delay has passed', () => {\n      const callback = spy();\n      const throttled = throttle(callback, 1000);\n\n      throttled();\n      expect(callback).to.have.been.called.exactly(1);\n      clock.tick(1000);\n      throttled();\n      expect(callback).to.have.been.called.exactly(2);\n      clock.tick(1000);\n      throttled();\n      expect(callback).to.have.been.called.exactly(3);\n      clock.tick(1000);\n      expect(callback).to.have.been.called.exactly(3);\n    });\n\n    it('only calls the callback once per delay', () => {\n      const callback = spy();\n      const throttled = throttle(callback, 1000);\n\n      throttled();\n      expect(callback).to.have.been.called.exactly(1);\n\n      clock.tick(999);\n      throttled();\n      expect(callback).to.have.been.called.exactly(1);\n      clock.tick(1);\n      expect(callback).to.have.been.called.exactly(2);\n\n      throttled();\n      expect(callback).to.have.been.called.exactly(2);\n\n      clock.tick(999);\n      expect(callback).to.have.been.called.exactly(2);\n\n      throttled();\n      clock.tick(1);\n      expect(callback).to.have.been.called.exactly(3);\n    });\n\n    it(`always calls callback with the last call's arguments`, () => {\n      const callback = spy();\n      const throttled = throttle(callback, 1000);\n\n      throttled(1, 2);\n      expect(callback).to.have.been.called.exactly(1);\n      expect(callback).to.have.been.called.with(1, 2);\n\n      clock.tick(999);\n      throttled(3, 4);\n      throttled(5, 6);\n      clock.tick(1);\n      expect(callback).to.have.been.called.exactly(2);\n      expect(callback).to.not.have.been.called.with(3, 4);\n      expect(callback).to.have.been.called.with(5, 6);\n    });\n  });\n\n  describe('cancel method', () => {\n    it('has no effect before first call', () => {\n      const callback = spy();\n      const throttled = throttle(callback, 1000);\n\n      throttled.cancel();\n      throttled();\n      expect(callback).to.have.been.called.exactly(1);\n      throttled();\n      clock.tick(1000);\n      expect(callback).to.have.been.called.exactly(2);\n    });\n\n    it('cancels a scheduled callback', () => {\n      const callback = spy();\n      const throttled = throttle(callback, 1000);\n\n      throttled();\n      expect(callback).to.have.been.called.exactly(1);\n\n      throttled();\n      throttled.cancel();\n      clock.tick(1000);\n      expect(callback).to.have.been.called.exactly(1);\n    });\n\n    it('does not prevent future calls', () => {\n      const callback = spy();\n      const throttled = throttle(callback, 1000);\n\n      throttled();\n      expect(callback).to.have.been.called.exactly(1);\n\n      throttled();\n      throttled.cancel();\n      clock.tick(1000);\n      expect(callback).to.have.been.called.exactly(1);\n\n      throttled();\n      expect(callback).to.have.been.called.exactly(2);\n    });\n\n    it('does not reset delay', () => {\n      const callback = spy();\n      const throttled = throttle(callback, 1000);\n\n      throttled();\n      expect(callback).to.have.been.called.exactly(1);\n\n      throttled();\n      throttled.cancel();\n      clock.tick(500);\n      expect(callback).to.have.been.called.exactly(1);\n\n      throttled();\n      expect(callback).to.have.been.called.exactly(1);\n\n      clock.tick(500);\n      expect(callback).to.have.been.called.exactly(2);\n    });\n  });\n});\n"
+            }
+        },
+        "spaceTime": "",
+        "submissionStatistics": {
+            "correctCount": 1703,
+            "failureCount": 528
+        },
+        "testStrategy": "SANDBOX_ONLY",
+        "tests": [],
+        "uid": "throttle",
+        "version": 0,
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "657198308"
+        },
+        "visualization": {
+            "inputType": null,
+            "outputType": null
+        }
+    },
+    "difficulty": 0,
+    "instructor": "Conner Ardman",
+    "name": "Throttle",
+    "releaseDate": "2021-12-15T00:00:00Z",
+    "type": "CODING_STANDARD",
+    "uid": "throttle"
+}

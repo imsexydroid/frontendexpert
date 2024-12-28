@@ -1,0 +1,68 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "CSS",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "category": "CSS",
+        "hints": [
+            "<p>\n  A triangle can be created purely by using borders when a block element has\n  no width or height.\n</p>",
+            "<p>\n  To create the triangle, try using a border bottom to create the color and\n  the height of the triangle. Then a transparent border can be used for the other\n  edges to change the width.\n</p>",
+            "To put the ears and light outside of the head, try using absolute positioning\nwith a relative positioned parent."
+        ],
+        "languageToWrite": "css",
+        "name": "Robot Emoji",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>You're given an HTML file with the markup for a robot head emoji.</p>\n  <p>\n    Using only CSS, style the HTML to have the appearance of a robot emoji with\n    the following characteristics:\n  </p>\n  <ul>\n    <li>\n      The head should be a perfect square with a width and height of 150px, a\n      margin of 50px, and a background color of\n      <div class=\"CodeEditor-selectable\">#a4d9eb</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: #a4d9eb\"\n      ></span\n      >. The head should also have a solid,\n      <div class=\"CodeEditor-selectable\">#9bbcc2</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: #9bbcc2\"\n      ></span\n      >, 5px border and a 20px border-radius.\n    </li>\n\n    <li>\n      A light should be positioned on top of the head's border. This light\n      should be horizontally centered with respect to the head. The bulb should\n      be a perfect circle with a width and height of 30px and a background color\n      of <div class=\"CodeEditor-selectable\">#ffa500</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: #ffa500\"\n      ></span\n      >. The light's stick should be a rectangle with a width of 10px, a height\n      of 15px, and a background color of\n      <div class=\"CodeEditor-selectable\">#808080</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: #808080\"\n      ></span\n      >. The bulb should be positioned on top of the stick, with 5px of overlap.\n    </li>\n\n    <li>\n      The ears should each be rectangles with widths of 10px, heights of\n      50px, and background colors of\n      <div class=\"CodeEditor-selectable\">#c90a0a</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: #c90a0a\"\n      ></span\n      >. They should be positioned against the left and right sides of the\n      head's border. The left ear should have a top-left and bottom-left\n      border-radius of 5px, and the right ear should have a top-right and\n      bottom-right border-radius of 5px. The ears should be vertically centered\n      with respect to the head.\n    </li>\n\n    <li>\n      The eyes should be perfect circles, each with a width and height of 30px.\n      They should be positioned 25px from the top of the head (30px from the top\n      of the head's border). There should be 20px of gap between the eyes, and\n      they should be horizontally centered in the head. Each eye should have\n      a background color of\n      <div class=\"CodeEditor-selectable\">white</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: white\"\n      ></span\n      >, and a solid,\n      <div class=\"CodeEditor-selectable\">#00b3ff</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: #00b3ff\"\n      ></span\n      >, 5px border.\n    </li>\n\n    <li>\n      The nose should be a triangle with a color of\n      <div class=\"CodeEditor-selectable\">#c90a0a</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: #c90a0a\"\n      ></span\n      >. This triangle should have a width and height of 30px. The triangle\n      should be pointed up (i.e. the 30px edge should be parallel to the bottom of\n      the head). The nose should be horizontally and\n      vertically centered in the head.\n    </li>\n    <li>\n      The mouth should have a width of 100px, a height of 25px and a background\n      color of\n      <div class=\"CodeEditor-selectable\">#dedede</div>\n        <span\n          class=\"CodeEditor-colorSquare\"\n          style=\"background-color: #dedede\"\n        ></span\n        >, and a solid,\n        <div class=\"CodeEditor-selectable\">black</div>\n        <span\n          class=\"CodeEditor-colorSquare\"\n          style=\"background-color: black\"\n        ></span\n        >, 1px border with a 20px border-radius. The mouth should be 25px from\n        the bottom of the head (30px from the bottom of the head's border), and\n        it should be horizontally centered.\n    </li>\n\n    <li>\n      The mouth contains 4 teeth, each of which has a width of a 5px and a\n      background color of\n      <div class=\"CodeEditor-selectable\">black</div>\n        <span\n          class=\"CodeEditor-colorSquare\"\n          style=\"background-color: black\"\n        ></span\n        >. These teeth should take up the entire height of the mouth without\n        overflowing out of the mouth. There should be even horizontal spacing\n        between each tooth, with half as much space before the first tooth and\n        after the last tooth.\n    </li>\n  </ul>\n  <p>\n    Your submission will be assessed based on how similar your\n    <b>Browser Output</b> is to the <b>Expected Output</b>; it should be nearly\n    identical.\n  </p>\n</div>",
+        "promptCode": {
+            "html": "<div class=\"head\">\n  <div class=\"light\">\n    <div class=\"bulb\"></div>\n    <div class=\"stick\"></div>\n  </div>\n\n  <div class=\"ears\">\n    <div class=\"ear\"></div>\n    <div class=\"ear\"></div>\n  </div>\n\n  <div class=\"eyes\">\n    <div class=\"eye\"></div>\n    <div class=\"eye\"></div>\n  </div>\n\n  <div class=\"nose\"></div>\n\n  <div class=\"mouth\">\n    <div class=\"tooth\"></div>\n    <div class=\"tooth\"></div>\n    <div class=\"tooth\"></div>\n    <div class=\"tooth\"></div>\n  </div>\n</div>"
+        },
+        "reactConfig": null,
+        "solutions": {
+            "css": [
+                "/* Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved. */\n\n.head {\n  width: 150px;\n  height: 150px;\n  margin: 50px;\n  border: 5px solid #9bbcc2;\n  border-radius: 20px;\n  background-color: #a4d9eb;\n  position: relative;\n}\n\n.light {\n  position: absolute;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  top: -45px;\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.bulb {\n  width: 30px;\n  height: 30px;\n  margin-bottom: -5px;\n  border-radius: 50%;\n  background-color: #ffa500;\n  z-index: 1;\n}\n\n.stick {\n  width: 10px;\n  height: 15px;\n  background-color: #808080;\n}\n\n.ear {\n  position: absolute;\n  top: 50%;\n  transform: translateY(-50%);\n  width: 10px;\n  height: 50px;\n  background-color: #c90a0a;\n}\n\n.ear:first-of-type {\n  border-top-left-radius: 5px;\n  border-bottom-left-radius: 5px;\n  left: -15px;\n}\n\n.ear:last-of-type {\n  border-top-right-radius: 5px;\n  border-bottom-right-radius: 5px;\n  right: -15px;\n}\n\n.eyes {\n  display: flex;\n  justify-content: center;\n  gap: 20px;\n  padding-top: 25px;\n}\n\n.eye {\n  width: 30px;\n  height: 30px;\n  background-color: white;\n  border-radius: 50%;\n  border: 5px solid #00b3ff;\n}\n\n.nose {\n  width: 0;\n  height: 0;\n  border-left: 15px solid transparent;\n  border-right: 15px solid transparent;\n  border-bottom: 30px solid #c90a0a;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.mouth {\n  display: flex;\n  justify-content: space-around;\n  width: 100px;\n  height: 25px;\n  border: 1px solid black;\n  border-radius: 20px;\n  background-color: #dedede;\n  position: absolute;\n  bottom: 25px;\n  left: 50%;\n  transform: translateX(-50%);\n  overflow: hidden;\n}\n\n.tooth {\n  width: 5px;\n  height: 100%;\n  background-color: black;\n}",
+                "/* Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved. */\n\n.head {\n  --head-border-size: 5px;\n\n  width: 150px;\n  height: 150px;\n  margin: 50px;\n  border: var(--head-border-size) solid #9bbcc2;\n  border-radius: 20px;\n  background-color: #a4d9eb;\n  position: relative;\n}\n\n.light {\n  --bulb-height: 30px;\n  --bulb-overlap: 5px;\n  --stick-height: 15px;\n\n  position: absolute;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  top: calc((var(--bulb-height) + var(--stick-height) + var(--head-border-size) - var(--bulb-overlap)) * -1);\n  left: 50%;\n  transform: translateX(-50%);\n}\n\n.bulb {\n  width: var(--bulb-height);\n  height: var(--bulb-height);\n  margin-bottom: calc(var(--bulb-overlap) * -1);\n  border-radius: 50%;\n  background-color: #ffa500;\n  z-index: 1;\n}\n\n.stick {\n  width: 10px;\n  height: var(--stick-height);\n  background-color: #808080;\n}\n\n.ear {\n  --ear-width: 10px;\n  --ear-border-radius: 5px;\n  --ear-edge-offset: calc((var(--ear-width) + var(--head-border-size)) * -1);\n\n  position: absolute;\n  top: 50%;\n  transform: translateY(-50%);\n  width: var(--ear-width);\n  height: 50px;\n  background-color: #c90a0a;\n}\n\n.ear:first-of-type {\n  border-top-left-radius: var(--ear-border-radius);\n  border-bottom-left-radius: var(--ear-border-radius);\n  left: var(--ear-edge-offset);\n}\n\n.ear:last-of-type {\n  border-top-right-radius: var(--ear-border-radius);\n  border-bottom-right-radius: var(--ear-border-radius);\n  right: var(--ear-edge-offset);\n}\n\n.eyes {\n  display: flex;\n  justify-content: center;\n  gap: 20px;\n  padding-top: 25px;\n}\n\n.eye {\n  width: 30px;\n  height: 30px;\n  background-color: white;\n  border-radius: 50%;\n  border: 5px solid #00b3ff;\n}\n\n.nose {\n  width: 0;\n  height: 0;\n  border-left: 15px solid transparent;\n  border-right: 15px solid transparent;\n  border-bottom: 30px solid #c90a0a;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.mouth {\n  display: flex;\n  justify-content: space-around;\n  width: 100px;\n  height: 25px;\n  border: 1px solid black;\n  border-radius: 20px;\n  background-color: #dedede;\n  position: absolute;\n  bottom: 25px;\n  left: 50%;\n  transform: translateX(-50%);\n  overflow: hidden;\n}\n\n.tooth {\n  width: 5px;\n  height: 100%;\n  background-color: black;\n}"
+            ]
+        },
+        "startingCode": {
+            "css": "/* Write your code here. */\n\n/* Delete this ruleset. */\nbody {\n  background-color: grey;\n}\n"
+        },
+        "submissionStatistics": {
+            "correctCount": 1430,
+            "failureCount": 2207
+        },
+        "testHarness": {
+            "sandboxCode": "",
+            "unitTests": ""
+        },
+        "testStrategy": "SCREENSHOT",
+        "uid": "robot-emoji",
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "725496355"
+        }
+    },
+    "difficulty": null,
+    "instructor": "Conner Ardman",
+    "name": "Robot Emoji",
+    "releaseDate": "2022-07-01T00:00:00Z",
+    "type": "CODING_FRONTEND",
+    "uid": "robot-emoji"
+}

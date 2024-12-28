@@ -1,0 +1,70 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "CSS",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "category": "CSS",
+        "hints": [
+            "<p>\n  Try breaking the problem into small pieces and thinking about the individual\n  shapes needed. Starting with the head and then moving down the DOM tree\n  is likely the easiest approach.\n</p>",
+            "<p>\n  When an element is set to <span>position: absolute</span>, it will be positioned\n  relative to its nearest positioned ancestor (e.g. a parent with <span>position: relative</span>).\n  Can you use this to position the various elements based on the position of the head?\n</p>",
+            "<p>\n  A <span>border-radius</span> of <span>50%</span> will create a perfect circle\n  when an element has the same width and height.\n</p>",
+            "<p>\n  The <span>:first-child</span> and <span>:nth-child()</span> pseudo-classes can be\n  used to select specific children numbers. For example <span>.foo:first-child</span>\n  will select elements with the class <span>foo</span> that are the first child\n  of their parent.\n</p>",
+            "<p>\n  Centering an element with position absolute can be tricky, but the easiest way\n  will be to give it <span>left: 50%</span>, which moves the left edge of the\n  element 50% of the way over. This can then be combined with\n  <span>transform: translateX(-50%)</span> to account for the width of the element itself.\n</p>"
+        ],
+        "languageToWrite": "css",
+        "name": "Pig Emoji",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>You're given an HTML file with the markup for a pig emoji.</p>\n  <p>\n    Using only CSS, style the HTML to have the appearance of a pig emoji with\n    the following characteristics:\n  </p>\n  <ul>\n    <li>\n      The head should be a perfect circle with a width and height of 200px, a\n      top margin of 20px, and a background color of\n      <div class=\"CodeEditor-selectable\">#ffc0cb</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: #ffc0cb\"\n      ></span\n      >.\n    </li>\n    <li>\n      The ears should be perfect circles, each with a width and height of 50px.\n      They should be positioned behind the head and 10px inwards from the left\n      and right edges of the head, respectively. They should also protrude above\n      the head by 10px, and they should have the same background color as the\n      head.\n    </li>\n    <li>\n      The eyes should be perfect circles, each with a width and height of 50px.\n      They should be positioned 40px from the top of the head, and 30px from the\n      left and right edges of the head, respectively. They should have a\n      background color of\n      <div class=\"CodeEditor-selectable\">white</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: white\"\n      ></span\n      >.\n    </li>\n    <li>\n      Each eye contains a pupil, which should be half the size of the eye with\n      a border-radius of 50%. The pupils should be centered in their respective\n      eye, and they should have a background color of\n      <div class=\"CodeEditor-selectable\">black</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: black\"\n      ></span\n      >.\n    </li>\n    <li>\n      The nose should have a width of 100px and a height of 60px. It should be\n      horizontally centered and positioned 30px from the bottom of the head.\n      Additionally, it should have a border radius of 35% and a background color\n      of\n      <div class=\"CodeEditor-selectable\">#f57187</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: #f57187\"\n      ></span\n      >.\n    </li>\n    <li>\n      The nose contains two nostrils, each with a height that's 50% of the\n      height of the nose and a width that's 25% of the width of the nose. The\n      nostrils should be vertically centered with horizontal space around them\n      (twice as much space between them as from the edge of the nose).\n      Additionally, they should have a border radius of 50% and a background\n      color of\n      <div class=\"CodeEditor-selectable\">black</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: black\"\n      ></span\n      >.\n    </li>\n    <li>\n      The head and both ears should each have a solid,\n      <div class=\"CodeEditor-selectable\">black</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: black\"\n      ></span\n      >, 5px border, while the nose and both eyes should each have a solid\n      <div class=\"CodeEditor-selectable\">black</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: black\"\n      ></span\n      >, 2px border.\n    </li>\n  </ul>\n  <p>\n    Your submission will be assessed based on how similar your\n    <b>Browser Output</b> is to the <b>Expected Output</b>; it should be nearly\n    identical.\n  </p>\n</div>",
+        "promptCode": {
+            "html": "<div class=\"head\">\n  <div>\n    <div class=\"ear\"></div>\n    <div class=\"ear\"></div>\n  </div>\n\n  <div>\n    <div class=\"eye\">\n      <div class=\"pupil\"></div>\n    </div>\n    <div class=\"eye\">\n      <div class=\"pupil\"></div>\n    </div>\n  </div>\n\n  <div class=\"nose\">\n    <div class=\"nostril\"></div>\n    <div class=\"nostril\"></div>\n  </div>\n</div>\n\n"
+        },
+        "reactConfig": null,
+        "solutions": {
+            "css": [
+                "/* Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved. */\n\n.head {\n  position: relative;\n  width: 200px;\n  height: 200px;\n  border-radius: 50%;\n  border: 5px solid black;\n  margin-top: 20px;\n  background-color: #ffc0cb;\n}\n\n.ear {\n  position: absolute;\n  z-index: -1;\n  width: 50px;\n  height: 50px;\n  top: -10px;\n  border-radius: 50%;\n  border: 5px solid black;\n  background-color: #ffc0cb;\n}\n\n.ear:first-child {\n  left: 10px;\n}\n\n.ear:nth-child(2) {\n  right: 10px;\n}\n\n.eye {\n  position: absolute;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  top: 40px;\n  width: 50px;\n  height: 50px;\n  border: 2px solid black;\n  border-radius: 50%;\n  background-color: white;\n}\n\n.eye:first-child {\n  left: 30px;\n}\n\n.eye:nth-child(2) {\n  right: 30px;\n}\n\n.pupil {\n  width: 50%;\n  height: 50%;\n  border-radius: 50%;\n  background-color: black;\n}\n\n.nose {\n  position: absolute;\n  display: flex;\n  justify-content: space-around;\n  align-items: center;\n  width: 100px;\n  height: 60px;\n  bottom: 30px;\n  left: 50%;\n  transform: translateX(-50%);\n  border: 2px solid black;\n  border-radius: 35%;\n  background-color: #f57187;\n}\n\n.nostril {\n  width: 25%;\n  height: 50%;\n  border-radius: 50%;\n  background-color: black;\n}",
+                "/* Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved. */\n\n:root {\n  --main-color: #ffc0cb;\n\n  --main-border: 5px solid black;\n  --secondary-border: 2px solid black;\n}\n\n.head {\n  --head-size: 200px;\n\n  position: relative;\n  width: var(--head-size);\n  height: var(--head-size);\n  border-radius: 50%;\n  border: var(--main-border);\n  margin-top: 20px;\n  background-color: var(--main-color);\n}\n\n.ear {\n  --ear-size: 50px;\n  --ear-horizontal-offset: 10px;\n\n  position: absolute;\n  z-index: -1;\n  width: var(--ear-size);\n  height: var(--ear-size);\n  top: -10px;\n  border-radius: 50%;\n  border: var(--main-border);\n  background-color: var(--main-color);\n}\n\n.ear:first-child {\n  left: var(--ear-horizontal-offset);\n}\n\n.ear:nth-child(2) {\n  right: var(--ear-horizontal-offset);\n}\n\n.eye {\n  --eye-size: 50px;\n  --eye-horizontal-offset: 30px;\n\n  position: absolute;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  top: 40px;\n  width: var(--eye-size);\n  height: var(--eye-size);\n  border: var(--secondary-border);\n  border-radius: 50%;\n  background-color: white;\n}\n\n.eye:first-child {\n  left: var(--eye-horizontal-offset);\n}\n\n.eye:nth-child(2) {\n  right: var(--eye-horizontal-offset);\n}\n\n.pupil {\n  --pupil-size: 50%;\n\n  width: var(--pupil-size);\n  height: var(--pupil-size);\n  border-radius: 50%;\n  background-color: black;\n}\n\n.nose {\n  position: absolute;\n  display: flex;\n  justify-content: space-around;\n  align-items: center;\n  width: 100px;\n  height: 60px;\n  bottom: 30px;\n  left: 50%;\n  transform: translateX(-50%);\n  border: var(--secondary-border);\n  border-radius: 35%;\n  background-color: #f57187;\n}\n\n.nostril {\n  width: 25%;\n  height: 50%;\n  border-radius: 50%;\n  background-color: black;\n}"
+            ]
+        },
+        "startingCode": {
+            "css": "/* Write your code here. */\n\n/* Delete this ruleset. */\nbody {\n  background-color: grey;\n}\n"
+        },
+        "submissionStatistics": {
+            "correctCount": 3078,
+            "failureCount": 9592
+        },
+        "testHarness": {
+            "sandboxCode": "",
+            "unitTests": ""
+        },
+        "testStrategy": "SCREENSHOT",
+        "uid": "pig-emoji",
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "651838068"
+        }
+    },
+    "difficulty": null,
+    "instructor": "Conner Ardman",
+    "name": "Pig Emoji",
+    "releaseDate": "2021-12-01T00:00:00Z",
+    "type": "CODING_FRONTEND",
+    "uid": "pig-emoji"
+}

@@ -1,0 +1,67 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "HTML",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "category": "HTML",
+        "hints": [
+            "<p>\n  There are two primary types of lists in HTML \u2014 <span>&lt;ul&gt;</span> and\n  <span>&lt;ol&gt;</span> for unordered and ordered lists respectively.\n</p>",
+            "<p>\n  The only permitted children of lists are <span>&lt;li&gt;</span> elements. This\n  means that even nested lists must be inside of a list item, usually along with\n  the text describing that nested list.\n</p>",
+            "<p>\n  These are some of the most common semantic grouping tags \u2014\n  <span>&lt;header&gt;</span>, <span>&lt;article&gt;</span>,\n  <span>&lt;section&gt;</span>, <span>&lt;main&gt;</span>,\n  <span>&lt;footer&gt;</span>, <span>&lt;aside&gt;</span>. Which seem most\n  relevant here?\n</p>"
+        ],
+        "languageToWrite": "html",
+        "name": "Spaghetti Recipe",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    You've been provided with a recipe for spaghetti as raw text, and you need\n    to convert this recipe into a properly marked-up HTML file.\n  </p>\n  <p>\n    The recipe should have a primary heading of \"Spaghetti Recipe\", and it\n    should be divided into two sections, the ingredients and the instructions,\n    with the headings \"Ingredients\" and \"Instructions\", respectively.\n  </p>\n  <p>The ingredients are an unordered list with the following contents:</p>\n  <pre>\n&bull; Spaghetti\n&bull; Marinara Sauce\n&bull; Salt\n&bull; Water</pre\n  >\n  <p>The instructions are an ordered list with the following contents:</p>\n  <pre>\n1. Bring water to a boil.\n2. Add spaghetti to boiling water.\n   1. Add salt to taste.\n   2. Cook for 10 minutes, stirring occasionally.\n3. Add marinara sauce to a pan, bringing to a simmer.\n4. Mix cooked spaghetti with marinara sauce.\n5. Enjoy!</pre\n  >\n  <p>\n    Note that \"Add salt to taste.\" and \"Cook for 10 minutes, stirring\n    occasionally.\" are in a sub-ordered list under the second instruction.\n  </p>\n  <p>\n    Your HTML code should use proper semantic markup. However, you only need to\n    write the HTML that would go inside of a document's\n    <span>&lt;body&gt;</span> tag; no need to worry about the\n    <span>&lt;head&gt;</span> tag, the <span>&lt;html&gt;</span> tag, or the\n    <span>&lt;!DOCTYPE&gt;</span> declaration.\n  </p>\n</div>",
+        "promptCode": {
+            "css": "body {\n  background-color: lightgrey;\n}"
+        },
+        "reactConfig": null,
+        "solutions": {
+            "html": [
+                "<!--\nCopyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n-->\n\n<article>\n  <header>\n    <h1>Spaghetti Recipe</h1>\n  </header>\n\n  <section>\n    <h2>Ingredients</h2>\n    <ul>\n      <li>Spaghetti</li>\n      <li>Marinara Sauce</li>\n      <li>Salt</li>\n      <li>Water</li>\n    </ul>\n  </section>\n\n  <section>\n    <h2>Instructions</h2>\n    <ol>\n      <li>Bring water to a boil.</li>\n      <li>\n        Add spaghetti to boiling water.\n        <ol>\n          <li>Add salt to taste.</li>\n          <li>Cook for 10 minutes, stirring occasionally.</li>\n        </ol>\n      </li>\n      <li>Add marinara sauce to a pan, bringing to a simmer.</li>\n      <li>Mix cooked spaghetti with marinara sauce.</li>\n      <li>Enjoy!</li>\n    </ol>\n  </section>\n</article>"
+            ]
+        },
+        "startingCode": {
+            "html": "<!-- Write your code here. -->\n\n<!-- Replace this text with HTML markup: -->\nSpaghetti Recipe\n\nIngredients\n  Spaghetti\n  Marinara Sauce\n  Salt\n  Water\n\nInstructions\n  Bring water to a boil.\n  Add spaghetti to boiling water.\n    Add salt to taste.\n    Cook for 10 minutes, stirring occasionally.\n  Add marinara sauce to a pan, bringing to a simmer.\n  Mix cooked spaghetti with marinara sauce.\n  Enjoy!\n"
+        },
+        "submissionStatistics": {
+            "correctCount": 5805,
+            "failureCount": 3861
+        },
+        "testHarness": {
+            "sandboxCode": "// This file is initialized with a few test cases.\n// Feel free to add, edit, or remove test cases in\n// this file as you see fit!\n\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\nconst {JSDOM} = require('jsdom');\nconst {readFileSync} = require('fs');\nconst {expect} = require('chai');\n\nconst html = readFileSync('data/index.html');\n\nconst resetDom = () => {\n  const dom = new JSDOM(html, {\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n};\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\n\ndescribe('spaghetti recipe', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  describe('markup', () => {\n    it('has correct text', () => {\n      const expectedTextContent =\n        'Spaghetti Recipe Ingredients Spaghetti Marinara \\\nSauce Salt Water Instructions Bring water to a boil. Add spaghetti to boiling \\\nwater. Add salt to taste. Cook for 10 minutes, stirring occasionally. \\\nAdd marinara sauce to a pan, bringing to a simmer. Mix cooked spaghetti \\\nwith marinara sauce. Enjoy!';\n      expect(document.body.textContent.replace(/\\s\\s+/g, ' ').trim()).to.equal(expectedTextContent);\n    });\n\n    it('has correct top level heading', () => {\n      const heading = document.querySelector('h1');\n      expect(heading.textContent.trim()).to.equal('Spaghetti Recipe');\n    });\n  });\n});\n",
+            "unitTests": "/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\nconst {JSDOM} = require('jsdom');\nconst {readFileSync} = require('fs');\nconst {expect} = require('chai');\n\nconst html = readFileSync('data/index.html');\n\nconst resetDom = () => {\n  const dom = new JSDOM(html, {\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n};\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\n\ndescribe('spaghetti recipe', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  describe('markup', () => {\n    it('has correct text', () => {\n      const expectedTextContent =\n        'Spaghetti Recipe Ingredients Spaghetti Marinara \\\nSauce Salt Water Instructions Bring water to a boil. Add spaghetti to boiling \\\nwater. Add salt to taste. Cook for 10 minutes, stirring occasionally. \\\nAdd marinara sauce to a pan, bringing to a simmer. Mix cooked spaghetti \\\nwith marinara sauce. Enjoy!';\n      expect(document.body.textContent.replace(/\\s\\s+/g, ' ').trim()).to.equal(expectedTextContent);\n    });\n\n    it('has correct top level heading', () => {\n      const heading = document.querySelector('h1');\n      expect(heading.textContent.trim()).to.equal('Spaghetti Recipe');\n    });\n\n    it('has correct secondary headings', () => {\n      const headings = document.querySelectorAll('h2');\n      expect(headings[0].textContent.trim()).to.equal('Ingredients');\n      expect(headings[1].textContent.trim()).to.equal('Instructions');\n    });\n\n    it('has correct ingredients list', () => {\n      const ul = document.querySelector('ul');\n      expect(ul.children.length).to.equal(4);\n      const expectedItems = ['Spaghetti', 'Marinara Sauce', 'Salt', 'Water'];\n      Array.from(ul.children).forEach((child, i) => {\n        expect(child.textContent.trim()).to.equal(expectedItems[i]);\n      });\n    });\n\n    it('has correct instructions list', () => {\n      const instructionsListItems = document.querySelectorAll('ol li');\n      expect(instructionsListItems.length).to.equal(7);\n      const expectedItems = [\n        'Bring water to a boil.',\n        'Add spaghetti to boiling water.',\n        'Add salt to taste.',\n        'Cook for 10 minutes, stirring occasionally.',\n        'Add marinara sauce to a pan, bringing to a simmer.',\n        'Mix cooked spaghetti with marinara sauce.',\n        'Enjoy!',\n      ];\n      Array.from(instructionsListItems).forEach((listItem, i) => {\n        const text = listItem.childNodes[0].textContent.trim();\n        expect(text).to.equal(expectedItems[i]);\n      });\n    });\n\n    it('lists only contain list item children', () => {\n      const lists = document.querySelectorAll('ol, ul');\n      Array.from(lists).forEach(list => {\n        Array.from(list.children).forEach(listItem => {\n          expect(listItem.tagName).to.equal('LI');\n        });\n      });\n    });\n\n    it('nested instructions have correct markup', () => {\n      const listItem = document.querySelectorAll('ol li')[1];\n      const childNodes = listItem.childNodes;\n      expect(childNodes[0].nodeType).to.equal(3); // Text node\n      expect(childNodes[1].tagName).to.equal('OL');\n      expect(childNodes[1].children.length).to.equal(2);\n      const nestedListItems = Array.from(childNodes[1].children);\n\n      const expectedItems = ['Add salt to taste.', 'Cook for 10 minutes, stirring occasionally.'];\n\n      nestedListItems.forEach((listItem, i) => {\n        expect(listItem.tagName).to.equal('LI');\n        expect(listItem.textContent).to.equal(expectedItems[i]);\n      });\n    });\n\n    it('uses semantic grouping tags correctly', () => {\n      const mainGrouping = document.querySelector('article, main');\n      expect(mainGrouping).to.exist;\n\n      const sectionGroupings = mainGrouping.querySelectorAll('article, section');\n      expect(sectionGroupings.length).to.equal(2);\n\n      // Each section should have a heading inside of the section\n      Array.from(sectionGroupings).forEach(group => {\n        const headings = group.querySelectorAll('h1, h2, h3, h4, h5, h6');\n        expect(headings.length).to.equal(1);\n      });\n\n      // Both top level lists should be nested inside of a semantic grouping\n      // tag, but not the same semantic grouping tag\n      const lists = document.querySelectorAll(\n        'article > ul, section > ul, article > ol, section > ol',\n      );\n      expect(lists.length).to.equal(2);\n\n      expect(lists[0].parentNode).to.not.equal(lists[1].parentNode);\n    });\n  });\n});\n"
+        },
+        "testStrategy": "MOCHA",
+        "uid": "spaghetti-recipe",
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "656385890"
+        }
+    },
+    "difficulty": null,
+    "instructor": "Conner Ardman",
+    "name": "Spaghetti Recipe",
+    "releaseDate": "2021-12-14T00:00:00Z",
+    "type": "CODING_FRONTEND",
+    "uid": "spaghetti-recipe"
+}

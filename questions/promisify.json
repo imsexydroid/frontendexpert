@@ -1,0 +1,80 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "JavaScript",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "assessmentSummary": null,
+        "category": "JavaScript",
+        "changelog": [],
+        "customInputVars": [],
+        "difficulty": 0,
+        "hints": [
+            "<p>\n  A Promise can be created with <span>new Promise(executorFunction)</span> with\n  the <span>executorFunction</span> taking in callback functions for resolving\n  and rejecting the Promise.\n</p>\n",
+            "\n<p>\n  The <span>callback</span> passed to <span>promisify</span> takes another\n  callback function as its last parameter. This callback takes in an\n  an error and value. When should the <span>original</span> callback be called?\n  What should the nested callback do with the error and value?\n</p>\n",
+            "\n<p>\n  The <span>call</span> or <span>apply</span> method can be used to call a function\n  with a specific <span>this</span> context. For example,\n  <span>func.apply(obj, args)</span> would call <span>func</span> with <span>obj</span>\n  bound to <span>this</span> and the <span>args</span> array passed as arguments.\n</p>"
+        ],
+        "isLongOutput": false,
+        "isSlowExecution": false,
+        "jsonTests": [],
+        "languagesSupported": [
+            "javascript"
+        ],
+        "name": "Promisify",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    Write a <span>promisify</span> function (similar to the\n    <a\n      class=\"Link Link--fe\"\n      href=\"https://nodejs.org/dist/latest-v8.x/docs/api/util.html#util_util_promisify_original\"\n      target=\"_blank\"\n      >util.promisify</a\n    >\n    Node.js function) that takes in a required\n    <span>callback</span> function and returns a new \"promisifed\" version of\n    that function.\n  </p>\n  <p>\n    The <span>callback</span> function can take in any number of parameters, but\n    its last parameter is guaranteed to be another callback function, which\n    takes in two parameters: an error and a value. We'll call this other\n    callback function <span>handleErrorAndValue</span> for simplicity.\n  </p>\n  <p>\n    For example, the following <span>adder</span> function could be passed to\n    the <span>promisify</span> function:\n  </p>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -15px\">\n  <pre\n    class=\"line-numbers\"\n  ><code class=\"language-javascript\">function adder(x, y, handleErrorAndValue) {\n  const value = x + y;\n  if (typeof value !== 'number') {\n    const error = new Error('Not a number');\n    handleErrorAndValue(error, null);\n  } else {\n    handleErrorAndValue(null, value);\n  }\n}</code></pre>\n</div>\n<div class=\"html\">\n  <p>\n    It adds two values <span>x</span> and <span>y</span>, and in the case that\n    the result isn't a number, it calls the\n    <span>handleErrorAndValue</span> function with a new error; otherwise, it\n    passes the summed value as the <span>handleErrorAndValue</span> function's\n    second parameter with a <span>null</span> error.\n  </p>\n  <p>\n    If this <span>adder</span> function were passed to the\n    <span>promisify</span> function, the resulting promisified function would\n    work just like <span>adder</span> does, except that it would return a new\n    <span>Promise</span>. If the <span>handleErrorAndValue</span> function were\n    to get called with an error, the returned promise would be rejected with\n    that error; otherwise, the returned promise would be resolved with the value\n    parameter.\n  </p>\n  <p>\n    Below is an example of the promisified <span>adder</span> function in\n    action:\n  </p>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -15px\">\n  <pre\n    class=\"line-numbers\"\n  ><code class=\"language-javascript\">const promisifiedAdder = promisify(adder);\n\npromisifiedAdder(1, 2)\n  .then(console.log) // This would log 3.\n  .catch(console.error);\n\npromisifiedAdder(1, \"foobar\")\n  .then(console.log)\n  .catch(console.error); // An error would be caught and logged.</code></pre>\n</div>\n<div class=\"html\">\n  <p>\n    To be clear, in order to properly call the main\n    <span>callback</span> function (<span>adder</span>, in the example above),\n    you'll need to implement the <span>handleErrorAndValue</span>\n    function, which will have to be passed to the main\n    <span>callback</span> function as its last argument.\n  </p>\n  <p>\n    Also, note that the main callback function should have the\n    <span>this</span> context of the promisified function caller. For example,\n    in the following code snippet, the <span>adder</span> callback should be\n    called with the <span>this</span> context of the <span>object</span>:\n  </p>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -15px\">\n  <pre class=\"line-numbers\"><code class=\"language-javascript\">const object = {};\nobject.promisifiedAdder = promisify(adder);\nobject.promisifiedAdder();</code></pre>\n</div>",
+        "releaseDate": "2021-12-12T00:00:00Z",
+        "resources": {
+            "javascript": {
+                "language": "javascript",
+                "sandboxCode": "// This file is initialized with a few test cases.\n// Feel free to add, edit, or remove test cases in\n// this file as you see fit!\n\nconst chai = require('chai');\nconst spies = require('chai-spies');\n\nchai.use(spies);\nconst spy = () =>\n  chai.spy(function (x, y, callback) {\n    const value = x + y;\n    if (typeof value !== 'number') {\n      return callback(new Error('Failed', null));\n    } else {\n      return callback(null, value);\n    }\n  });\n\nlet thisContext;\nconst {expect} = chai;\n\nconst {promisify} = require('./program.js');\n\ndescribe('promisify', () => {\n  beforeEach(() => {\n    thisContext = {test: '123'};\n  });\n\n  it('calling promisified function calls the original function', () => {\n    const callback = spy();\n    const promisified = promisify(callback);\n    expect(callback).to.have.been.called.exactly(0);\n    promisified(1, 2);\n    expect(callback).to.have.been.called.exactly(1);\n  });\n\n  it('promisified function handles non-error case', async () => {\n    const callback = spy();\n    const promisified = promisify(callback);\n    const returnValue = await promisified(1, 2);\n    expect(returnValue).to.equal(3);\n  });\n});\n",
+                "solutions": [
+                    "// Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n\nfunction promisify(callback) {\n  return function (...args) {\n    return new Promise((resolve, reject) => {\n      function handleErrorAndValue(error, value) {\n        if (error == null) {\n          resolve(value);\n        } else {\n          reject(error);\n        }\n      }\n\n      callback.call(this, ...args, handleErrorAndValue);\n    });\n  };\n}\n\n// Do not edit the line below.\nexports.promisify = promisify;\n"
+                ],
+                "solutionsDisabled": false,
+                "startingCode": "function promisify(callback) {\n  // Write your code here.\n}\n\n// Do not edit the line below.\nexports.promisify = promisify;\n",
+                "unitTests": "const chai = require('chai');\nconst spies = require('chai-spies');\n\nchai.use(spies);\nconst spy = () =>\n  chai.spy(function (x, y, callback) {\n    const value = x + y;\n    if (typeof value !== 'number') {\n      callback(new Error('Not a number', null));\n    } else {\n      callback(null, value);\n    }\n  });\n\nlet thisContext;\nconst {expect} = chai;\n\nconst {promisify} = require('./program.js');\n\ndescribe('promisify', () => {\n  beforeEach(() => {\n    thisContext = {test: '123'};\n  });\n\n  it('calling promisified function calls the original function', () => {\n    const callback = spy();\n    const promisified = promisify(callback);\n    expect(callback).to.have.been.called.exactly(0);\n    promisified(1, 2);\n    expect(callback).to.have.been.called.exactly(1);\n  });\n\n  it('promisified function returns a promise', () => {\n    const callback = spy();\n    const promisified = promisify(callback);\n    const returnValue = promisified(1, 2);\n    expect(returnValue instanceof Promise).to.be.true;\n  });\n\n  it('promisified function handles non-error case', async () => {\n    const callback = spy();\n    const promisified = promisify(callback);\n    const returnValue = await promisified(1, 2);\n    expect(returnValue).to.equal(3);\n  });\n\n  it('promisified function handles error case', async () => {\n    const callback = spy();\n    const promisified = promisify(callback);\n    let returnValue;\n    let error;\n    try {\n      returnValue = await promisified(1, 'a');\n    } catch (e) {\n      error = e;\n    }\n    expect(returnValue).to.not.exist;\n    expect(error).to.exist;\n    expect(error.message).to.equal('Not a number');\n  });\n\n  it('promisified function can be called multiple times', async () => {\n    const callback = spy();\n    const promisified = promisify(callback);\n    const returnValues = [];\n    const errors = [];\n    for (let i = 0; i < 4; i++) {\n      returnValues.push(await promisified(i, 2));\n    }\n    for (let i = 0; i < 4; i++) {\n      try {\n        await promisified(i, 'a');\n      } catch (e) {\n        errors.push(i);\n      }\n    }\n    expect(returnValues).to.deep.equal([2, 3, 4, 5]);\n    expect(errors).to.deep.equal([0, 1, 2, 3]);\n  });\n\n  it('multiple functions can be promisified', async () => {\n    const callback = spy();\n    const promisified = promisify(callback);\n\n    const callback2 = chai.spy(function (value, fn) {\n      if (typeof value !== 'string') {\n        fn(new Error('Not a string', null));\n      } else {\n        fn(null, value);\n      }\n    });\n    const promisified2 = promisify(callback2);\n\n    expect(callback).to.have.been.called.exactly(0);\n    expect(callback2).to.have.been.called.exactly(0);\n\n    const result1 = await promisified(1, 2);\n    expect(callback).to.have.been.called.exactly(1);\n    expect(callback2).to.have.been.called.exactly(0);\n\n    const result2 = await promisified2('abc');\n    expect(callback).to.have.been.called.exactly(1);\n    expect(callback2).to.have.been.called.exactly(1);\n\n    expect(result1).to.equal(3);\n    expect(result2).to.equal('abc');\n  });\n\n  it('promisifed function has the `this` context of the promisifed function caller', async () => {\n    const object = {spy: spy()};\n    function callback(...args) {\n      this.spy(...args);\n    }\n    object.promisified = promisify(callback);\n\n    await object.promisified(1, 2);\n    expect(object.spy).to.have.been.called.exactly(1);\n\n    try {\n      await object.promisified(1, 'a');\n    } catch (e) {\n      expect(object.spy).to.have.been.called.exactly(2);\n    }\n  });\n});\n"
+            }
+        },
+        "spaceTime": "",
+        "submissionStatistics": {
+            "correctCount": 2056,
+            "failureCount": 275
+        },
+        "testStrategy": "SANDBOX_ONLY",
+        "tests": [],
+        "uid": "promisify",
+        "version": 0,
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "655951362"
+        },
+        "visualization": {
+            "inputType": null,
+            "outputType": null
+        }
+    },
+    "difficulty": 0,
+    "instructor": "Conner Ardman",
+    "name": "Promisify",
+    "releaseDate": "2021-12-12T00:00:00Z",
+    "type": "CODING_STANDARD",
+    "uid": "promisify"
+}

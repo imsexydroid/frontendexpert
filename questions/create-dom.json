@@ -1,0 +1,79 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "JavaScript",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "assessmentSummary": null,
+        "category": "JavaScript",
+        "changelog": [],
+        "customInputVars": [],
+        "difficulty": 0,
+        "hints": [
+            "<p>\n  A text node can be created with <span>document.createTextNode(text)</span>\n  and an element node can be created with\n  <span>document.createElement(type)</span>.\n</p>\n",
+            "\n<p>\n  Not all attributes have a corresponding property of the same name, so the\n  safest way to dynamically add attributes is with the\n  <span>element.setAttribute(attribute, value)</span> function.\n</p>"
+        ],
+        "isLongOutput": false,
+        "isSlowExecution": false,
+        "jsonTests": [],
+        "languagesSupported": [
+            "javascript"
+        ],
+        "name": "Create DOM",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    Write a <span>createDom</span> function that takes in a required root\n    parameter, which is an object representation of a DOM tree's root node or\n    a string representation of a text node.\n  </p>\n\n  <p>\n    If the root parameter is an object, then a DOM\n    <a\n      class=\"Link Link--fe\"\n      href=\"https://developer.mozilla.org/en-US/docs/Web/API/Element\"\n      target=\"_blank\">\n      Element node\n    </a>\n    is returned. This object will have one required property: <span>type</span>,\n    which corresponds to the tag name of the element being created (e.g. \"div\"), as well as\n    two optional properties:\n    <span>children</span> and <span>attributes</span>. If <span>children</span>\n    exists, it will be an array of objects in the same format as the root parameter.\n    Each value in this array will be a child of the returned\n    node, in the order of the array. Additionally, if a child is a string instead\n    of an object, then that string should be used as text content.\n    If <span>attributes</span> exists, it will be an object, with each key\n    corresponding to an attribute name and each value corresponding to an\n    attribute value. These attributes are each attributes of the node.\n  </p>\n\n  <h3>Sample Usage</h3>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -10px\">\n  <pre\n    class=\"line-numbers\"\n  ><code class=\"language-javascript\">createDom({\n  type: 'input',\n  attributes: {\n    class: 'my-input',\n    type: 'password',\n    placeholder: 'type your password',\n  },\n}); // &lt;input class=\"my-input\" type=\"password\" placeholder=\"type your password\" /&gt;\n\ncreateDom({\n  type: 'p',\n  children: [\n    'Hello ',\n    {\n      type: 'strong',\n      children: ['World']\n    },\n  ]\n}); // &lt;p&gt;Hello &lt;strong&gt;World&lt;/strong&gt;&lt;/p&gt;</code></pre>\n</div>",
+        "releaseDate": "2022-09-10T00:00:00Z",
+        "resources": {
+            "javascript": {
+                "language": "javascript",
+                "sandboxCode": "// This file is initialized with a few test cases.\n// Feel free to add, edit, or remove test cases in\n// this file as you see fit!\n\nconst {JSDOM} = require('jsdom');\nconst chai = require('chai');\nconst {expect} = chai;\nconst {createDom} = require('./program.js');\n\nconst resetDom = () => {\n  const dom = new JSDOM({\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n};\n\ndescribe('createDom', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  it('can return a self-closing element with no children or attributes', () => {\n    const node = createDom({\n      type: 'br',\n    });\n    expect(node.nodeName).to.equal('BR');\n    expect(node.textContent).to.equal('');\n    expect(node.children.length).to.equal(0);\n    expect(node.childNodes.length).to.equal(0);\n  });\n\n  it('can return a self-closing element with attributes', () => {\n    const node = createDom({\n      type: 'input',\n      attributes: {\n        class: 'my-input',\n        type: 'password',\n        placeholder: 'type your password',\n      },\n    });\n    expect(node.nodeName).to.equal('INPUT');\n    expect(node.textContent).to.equal('');\n    expect(node.className).to.equal('my-input');\n    expect(node.type).to.equal('password');\n    expect(node.placeholder).to.equal('type your password');\n    expect(node.children.length).to.equal(0);\n    expect(node.childNodes.length).to.equal(0);\n  });\n});\n",
+                "solutions": [
+                    "// Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n\nfunction createDom(root) {\n  const node = document.createElement(root.type);\n\n  if (root.attributes != null) {\n    for (const [attribute, value] of Object.entries(root.attributes)) {\n      node.setAttribute(attribute, value);\n    }\n  }\n\n  root.children?.forEach(child => {\n    node.append(typeof child === 'string' ? child : createDom(child));\n  });\n\n  return node;\n}\n\n// Do not edit the line below.\nexports.createDom = createDom;\n"
+                ],
+                "solutionsDisabled": false,
+                "startingCode": "function createDom(root) {\n  // Write your code here.\n}\n\n// Do not edit the line below.\nexports.createDom = createDom;\n",
+                "unitTests": "const {JSDOM} = require('jsdom');\nconst chai = require('chai');\nconst {expect} = chai;\nconst {createDom} = require('./program.js');\n\nconst resetDom = () => {\n  const dom = new JSDOM({\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n};\n\ndescribe('createDom', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  it('can return a self-closing element with no children or attributes', () => {\n    const node = createDom({\n      type: 'br',\n    });\n    expect(node.nodeName).to.equal('BR');\n    expect(node.textContent).to.equal('');\n    expect(node.children.length).to.equal(0);\n    expect(node.childNodes.length).to.equal(0);\n  });\n\n  it('can return a self-closing element with attributes', () => {\n    const node = createDom({\n      type: 'input',\n      attributes: {\n        class: 'my-input',\n        type: 'password',\n        placeholder: 'type your password',\n      },\n    });\n    expect(node.nodeName).to.equal('INPUT');\n    expect(node.textContent).to.equal('');\n    expect(node.className).to.equal('my-input');\n    expect(node.type).to.equal('password');\n    expect(node.placeholder).to.equal('type your password');\n    expect(node.children.length).to.equal(0);\n    expect(node.childNodes.length).to.equal(0);\n  });\n\n  it('can return an element with text content and no attributes', () => {\n    const node = createDom({\n      type: 'p',\n      children: ['Hello World']\n    });\n    expect(node.nodeName).to.equal('P');\n    expect(node.textContent).to.equal('Hello World');\n    expect(node.children.length).to.equal(0);\n    expect(node.childNodes.length).to.equal(1);\n  });\n\n  it('can return an element with text content and attributes', () => {\n    const node = createDom({\n      type: 'h1',\n      children: ['Heading Content'],\n      attributes: {\n        class: 'my-heading',\n        id: \"my-id\",\n        draggable: true,\n      }\n    });\n    expect(node.nodeName).to.equal('H1');\n    expect(node.textContent).to.equal('Heading Content');\n    expect(node.className).to.equal('my-heading');\n    expect(node.id).to.equal('my-id');\n    expect(node.draggable).to.be.true;\n    expect(node.children.length).to.equal(0);\n    expect(node.childNodes.length).to.equal(1);\n  });\n\n  it('can return an element with a dom element as a child', () => {\n    const node = createDom({\n      type: 'p',\n      children: [{\n        type: 'em',\n        children: ['Hello World']\n      }]\n    });\n    expect(node.nodeName).to.equal('P');\n    expect(node.textContent).to.equal('Hello World');\n    expect(node.children.length).to.equal(1);\n    expect(node.childNodes.length).to.equal(1);\n\n    const em = node.children[0];\n    expect(em.nodeName).to.equal('EM');\n    expect(em.textContent).to.equal('Hello World');\n    expect(em.children.length).to.equal(0);\n    expect(em.childNodes.length).to.equal(1);\n  });\n\n  it('can return an element with multiple children', () => {\n    const node = createDom({\n      type: 'p',\n      children: [\n        'Hello ',\n        {\n          type: 'strong',\n          children: ['World']\n        },\n      ]\n    });\n    expect(node.nodeName).to.equal('P');\n    expect(node.textContent).to.equal('Hello World');\n    expect(node.children.length).to.equal(1);\n    expect(node.childNodes.length).to.equal(2);\n\n    const startingTextNode = node.childNodes[0];\n    expect(startingTextNode.textContent).to.equal('Hello ');\n    expect(startingTextNode.nodeName).to.equal('#text');\n\n    const em = node.childNodes[1];\n    expect(em.nodeName).to.equal('STRONG');\n    expect(em.textContent).to.equal('World');\n    expect(em.children.length).to.equal(0);\n    expect(em.childNodes.length).to.equal(1);\n  });\n\n  it('can return an element with mutliple deeply nested children', () => {\n    const node = createDom({\n      type: 'div',\n      children: [\n        'Top-level content',\n        {\n          type: 'h1',\n          children: ['Main Heading']\n        },\n        {\n          type: 'section',\n          children: [\n            {\n              type: 'h2',\n              children: [\n                \"Section\",\n                {\n                  type: 'br'\n                },\n                'Heading'\n              ]\n            },\n            {\n              type: 'p',\n              children: ['This is a paragraph'],\n              attributes: {\n                class: 'my-paragraph'\n              }\n            }\n          ],\n          attributes: {\n            class: 'section-container'\n          }\n        }\n      ],\n      attributes: {\n        id: 'wrapper'\n      }\n    });\n    expect(node.nodeName).to.equal('DIV');\n    expect(node.textContent).to.equal('Top-level contentMain HeadingSectionHeadingThis is a paragraph');\n    expect(node.id).to.equal('wrapper');\n    expect(node.children.length).to.equal(2);\n    expect(node.childNodes.length).to.equal(3);\n\n    const topLevelText = node.childNodes[0];\n    expect(topLevelText.textContent).to.equal('Top-level content');\n    expect(topLevelText.nodeName).to.equal('#text');\n\n    const h1 = node.childNodes[1];\n    expect(h1.nodeName).to.equal('H1');\n    expect(h1.textContent).to.equal('Main Heading');\n    expect(h1.children.length).to.equal(0);\n    expect(h1.childNodes.length).to.equal(1);\n\n    const section = node.childNodes[2];\n    expect(section.nodeName).to.equal('SECTION');\n    expect(section.textContent).to.equal('SectionHeadingThis is a paragraph');\n    expect(section.className).to.equal('section-container');\n    expect(section.children.length).to.equal(2);\n    expect(section.childNodes.length).to.equal(2);\n\n    const h2 = section.childNodes[0];\n    expect(h2.nodeName).to.equal('H2');\n    expect(h2.textContent).to.equal('SectionHeading');\n    expect(h2.children.length).to.equal(1);\n    expect(h2.childNodes.length).to.equal(3);\n\n    const h2FirstText = h2.childNodes[0];\n    expect(h2FirstText.textContent).to.equal('Section');\n    expect(h2FirstText.nodeName).to.equal('#text');\n\n    const br = h2.childNodes[1];\n    expect(br.nodeName).to.equal('BR');\n    expect(br.textContent).to.equal('');\n    expect(br.children.length).to.equal(0);\n\n    const h2LastText = h2.childNodes[2];\n    expect(h2LastText.textContent).to.equal('Heading');\n    expect(h2LastText.nodeName).to.equal('#text');\n\n    const p = section.childNodes[1];\n    expect(p.nodeName).to.equal('P');\n    expect(p.textContent).to.equal('This is a paragraph');\n    expect(p.className).to.equal('my-paragraph');\n    expect(p.children.length).to.equal(0);\n    expect(p.childNodes.length).to.equal(1);\n  });\n});\n"
+            }
+        },
+        "spaceTime": "",
+        "submissionStatistics": {
+            "correctCount": 1011,
+            "failureCount": 176
+        },
+        "testStrategy": "SANDBOX_ONLY",
+        "tests": [],
+        "uid": "create-dom",
+        "version": 0,
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "741260150"
+        },
+        "visualization": {
+            "inputType": null,
+            "outputType": null
+        }
+    },
+    "difficulty": 0,
+    "instructor": "Conner Ardman",
+    "name": "Create DOM",
+    "releaseDate": "2022-09-10T00:00:00Z",
+    "type": "CODING_STANDARD",
+    "uid": "create-dom"
+}

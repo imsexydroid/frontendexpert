@@ -1,0 +1,80 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "JavaScript",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "assessmentSummary": null,
+        "category": "JavaScript",
+        "changelog": [],
+        "customInputVars": [],
+        "difficulty": 0,
+        "hints": [
+            "<p>\n  An infinite number of arguments can be accepted in a function by using a\n  rest parameter such as <span>function(...args) { ... }</span>.\n</p>\n",
+            "\n<p>\n  The arguments from every call to the curried function need to be saved between\n  function calls. Can you accomplish this with a closure?\n</p>\n",
+            "\n<p>\n  In order to save arguments from all of the calls to the curried function, try\n  creating another callback function inside of the curried function, that way a\n  closure can be created and an array of seen arguments can be saved across\n  the function calls.\n</p>"
+        ],
+        "isLongOutput": false,
+        "isSlowExecution": false,
+        "jsonTests": [],
+        "languagesSupported": [
+            "javascript"
+        ],
+        "name": "Curry",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    Write a <span>curry</span> function that takes in a required\n    <span>callback</span> function and returns a curried version of that\n    function. This <span>callback</span> function can take in any number of\n    arguments, including none at all.\n  </p>\n  <p>\n    If the curried function is called with arguments, it should return a new\n    function, which can be called with more arguments, to be passed to the\n    underlying <span>callback</span>.\n  </p>\n  <p>\n    If the curried function (or one of the returned new functions) is called\n    with no arguments, this should be considered the end of the curried function\n    calls, and the <span>callback</span> should be called with every argument\n    that was passed, in the correct order.\n  </p>\n  <p>\n    For simplicity, you don't need to worry about binding a\n    <span>this</span> context (i.e., you can assume that the\n    <span>callback</span> doesn't reference <span>this</span>).\n  </p>\n  <p>\n    If you're unfamiliar with currying and are confused by this prompt, we\n    recommend watching the Currying video of the JavaScript Crash Course before\n    starting to code.\n  </p>\n  <h3>Sample Usage</h3>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -10px\">\n  <pre\n    class=\"line-numbers\"\n  ><code class=\"language-javascript\">const sum = (...numbers) => numbers.reduce((total, number) => total + number, 0);\nconst curriedSum = curry(sum);\n\ncurriedSum(); // 0\ncurriedSum(1)(); // 1\ncurriedSum(1)(2)(); // 3\ncurriedSum(1, 2)(3)(4, 5, 6)(); // 21\ncurriedSum(1); // [Function]\ncurriedSum(1, 2)(3); // [Function]</code></pre>\n</div>",
+        "releaseDate": "2022-01-03T00:00:00Z",
+        "resources": {
+            "javascript": {
+                "language": "javascript",
+                "sandboxCode": "// This file is initialized with a few test cases.\n// Feel free to add, edit, or remove test cases in\n// this file as you see fit!\n\nconst chai = require('chai');\nconst spies = require('chai-spies');\n\nchai.use(spies);\nconst infiniteSum = (...args) => args.reduce((num, acc) => num + acc, 0);\nconst spy = () => chai.spy(infiniteSum);\nconst {expect} = chai;\n\nconst {curry} = require('./program.js');\n\ndescribe('curry', () => {\n  it('sum with no parameters calls callback and returns 0', () => {\n    const callback = spy();\n    const curried = curry(callback);\n\n    expect(curried()).to.equal(0);\n    expect(callback).to.have.been.called.exactly(1);\n  });\n\n  it(`sum with single parameter returns a function, when called returns that parameter`, () => {\n    const callback = spy();\n    const curried = curry(callback);\n\n    expect(curried(2)()).to.equal(2);\n  });\n});\n",
+                "solutions": [
+                    "// Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n\nfunction curry(callback) {\n  const curriedCallback = (...args) => {\n    if (args.length === 0) {\n      return callback();\n    }\n\n    return (...otherArgs) => {\n      if (otherArgs.length === 0) {\n        return callback(...args);\n      }\n\n      return curriedCallback(...args, ...otherArgs);\n    };\n  };\n\n  return curriedCallback;\n}\n\n// Do not edit the line below.\nexports.curry = curry;\n"
+                ],
+                "solutionsDisabled": false,
+                "startingCode": "function curry(callback) {\n  // Write your code here.\n}\n\n// Do not edit the line below.\nexports.curry = curry;\n",
+                "unitTests": "const chai = require('chai');\nconst spies = require('chai-spies');\n\nchai.use(spies);\nconst infiniteSum = (...args) => args.reduce((num, acc) => num + acc, 0);\nconst spy = () => chai.spy(infiniteSum);\nconst {expect} = chai;\n\nconst {curry} = require('./program.js');\n\ndescribe('curry', () => {\n  it('sum with no parameters calls callback and returns 0', () => {\n    const callback = spy();\n    const curried = curry(callback);\n\n    expect(curried()).to.equal(0);\n    expect(callback).to.have.been.called.exactly(1);\n  });\n\n  it(`sum with single parameter returns a function, when called returns that parameter`, () => {\n    const callback = spy();\n    const curried = curry(callback);\n\n    expect(curried(2)()).to.equal(2);\n  });\n\n  it(`sum with multiple parameters, passing them all in to callback returns sum`, () => {\n    const callback = spy();\n    const curried = curry(callback);\n\n    expect(curried(2)(3)(4)()).to.equal(9);\n  });\n\n  it(`sum with multiple parameters in a single function call, passing them all in to callback returns sum`, () => {\n    const callback = spy();\n    const curried = curry(callback);\n\n    expect(curried(2, 3)(4)(5, 6)()).to.equal(20);\n  });\n\n  it(`doesn't call callback until receiving empty parameters`, () => {\n    const callback = spy();\n    const curried = curry(callback);\n\n    expect(typeof curried(1)).to.equal('function');\n    expect(typeof curried(1)(2)(3)(4)).to.equal('function');\n    expect(typeof curried(1, 2)(3)(4, 5)).to.equal('function');\n    expect(callback).to.have.been.called.exactly(0);\n    curried(1)();\n    expect(callback).to.have.been.called.exactly(1);\n    curried(1)(2)(3)(4)();\n    expect(callback).to.have.been.called.exactly(2);\n    curried(1, 2)(3)(4, 5)();\n    expect(callback).to.have.been.called.exactly(3);\n  });\n\n  it('curried function can be called multiple times', () => {\n    const callback = spy();\n    const curried = curry(callback);\n\n    expect(curried(2)(3)(4)()).to.equal(9);\n    expect(curried(2)(3)(4)()).to.equal(9);\n    expect(curried(2)(3, 4)()).to.equal(9);\n    expect(curried(1)(2, 3)()).to.equal(6);\n\n    const addTwo = curried(2);\n    const addFour = curried(4);\n    expect(addTwo(3)()).to.equal(5);\n    expect(addFour(3)()).to.equal(7);\n  });\n\n  it('intermediary curried function can be called multiple times', () => {\n    const callback = spy();\n    const curried = curry(callback);\n\n    const addTwo = curried(2);\n    const addFour = curried(4);\n    expect(addTwo(3)()).to.equal(5);\n    expect(addFour(3)()).to.equal(7);\n    expect(addTwo(4)()).to.equal(6);\n    expect(addFour(5)()).to.equal(9);\n\n    const addSix = addTwo(4);\n    expect(addSix(1)()).to.equal(7);\n    expect(addSix(2)()).to.equal(8);\n  });\n\n  it('multiple different curried functions can be created', () => {\n    const callback = spy();\n    const curriedSum = curry(callback);\n\n    const difference = (x, y, z) => x - y - z;\n    const curriedDifference = curry(difference);\n\n    expect(curriedSum(2)(3)(4)()).to.equal(9);\n    expect(curriedDifference(2)(3)(4)()).to.equal(-5);\n    expect(curriedSum(2, 4)()).to.equal(6);\n    expect(curriedDifference(5)(3)(2)()).to.equal(0);\n  });\n\n  it('passes arguments in correct order', () => {\n    let params;\n    const saveParams = (...args) => (params = args);\n    const curried = curry(saveParams);\n\n    curried(1, 2)(3)(4)(5, 6, 7)(8)();\n    expect(params).to.deep.equal([1, 2, 3, 4, 5, 6, 7, 8]);\n  });\n\n  it('can curry functions that expect no arguments ', () => {\n    const getFive = () => 5;\n    const getTen = () => 10;\n    const curriedFive = curry(getFive);\n    const curriedTen = curry(getTen);\n\n    expect(curriedFive()).to.equal(5);\n    expect(curriedTen()).to.equal(10);\n  });\n});\n"
+            }
+        },
+        "spaceTime": "",
+        "submissionStatistics": {
+            "correctCount": 1885,
+            "failureCount": 450
+        },
+        "testStrategy": "SANDBOX_ONLY",
+        "tests": [],
+        "uid": "curry",
+        "version": 0,
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "668406439"
+        },
+        "visualization": {
+            "inputType": null,
+            "outputType": null
+        }
+    },
+    "difficulty": 0,
+    "instructor": "Conner Ardman",
+    "name": "Curry",
+    "releaseDate": "2022-01-03T00:00:00Z",
+    "type": "CODING_STANDARD",
+    "uid": "curry"
+}

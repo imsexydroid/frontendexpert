@@ -1,0 +1,80 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": true,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "JavaScript",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": true,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "assessmentSummary": null,
+        "category": "JavaScript",
+        "changelog": [],
+        "customInputVars": [],
+        "difficulty": 0,
+        "hints": [
+            "<p>\n  You can check if a value is a primitive if <span>typeof value</span> returns\n  anything except <span>object</span>, and the value is not <span>null</span>.\n</p>\n",
+            "\n<p>\n  You can check if an object is an array with the <span>Array.isArray</span>\n  function.\n</p>\n",
+            "\n<p>\n  Try approaching this problem as two separate problems. First, can you flatten\n  a nested array? Next, can you flatten a nested object? Then finally, can you\n  combine these two solutions into one?\n</p>"
+        ],
+        "isLongOutput": false,
+        "isSlowExecution": false,
+        "jsonTests": [],
+        "languagesSupported": [
+            "javascript"
+        ],
+        "name": "Flatten",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    Write a <span>flatten</span> function that takes in a value and returns a\n    flattened version of that value.\n  </p>\n  <p>For the purpose of this problem, a flattened value is defined as follows:</p>\n  <ul>\n    <li>Primitive values should be left unchanged.</li>\n    <li>\n      Nested arrays should have their values brought up to the top level array.\n      For example, <span>[1, 2, [3, 4, [5, 6]]]</span> would be flattened to\n      <span>[1, 2, 3, 4, 5, 6]</span>.\n    </li>\n    <li>\n      Nested objects should have their key-value pairs brought up to the\n      top level object. For example,\n      <span>{a: 1, b: {c: 2, d: 3, e: {f: 4}}}</span> would be flattened to\n      <span>{a: 1, c: 2, d: 3, f: 4}</span>. Note that this means the\n      keys \"b\" and \"e\" were completely removed, since their values were flattened\n      to the top level. In the event of a key collision\n      (e.g. <span>{a: 1, b: {a: 2}}</span>), any associated value\n      can be used.\n    </li>\n    <li>\n      Arrays nested in objects and objects nested in arrays should be flattened.\n      For example, <span>{a: [1, 2, [3, 4]]}</span> would be flattened to\n      <span>{a: [1, 2, 3, 4]}</span>, and\n      <span>[{a: 1, b: {c: 2, d: 3}}]</span> would be flattened to\n      <span>[{a: 1, c: 2, d: 3}]</span>.\n    </li>\n  </ul>\n\n  <p>\n    For simplicity, you can assume the value as well as any nested values will\n    not be functions. Additionally, you can assume that all object keys are\n    strings. Your solution can return a flattened value in place, or it can\n    return a new value, either is acceptable.\n  </p>\n\n  <p>\n    Your code should not call the native <span>Array.prototype.flat()</span>\n    function.\n  </p>\n  <h3>Sample Usage</h3>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -10px\">\n  <pre\n    class=\"line-numbers\"\n  ><code class=\"language-javascript\">flatten(1); // 1\nflatten([]); // []\nflatten([1, 2, [3, 4, [], 5]]); // [1, 2, 3, 4, 5]\nflatten({}); // {}\nflatten({\n  a: null,\n  b: undefined,\n  c: {\n    d: true,\n    e: 4,\n    f: {},\n    g: {\n      h: 5\n    },\n  },\n}); // {a: null, b: undefined, d: true, e: 4, h: 5}\nflatten([1, 2, [3], {\n  a: 4,\n  b: {\n    c: 5,\n    d: [6, 7, [8, 9, [10]]],\n  },\n}]) // [1, 2, 3, {a: 4, c: 5, d: [6, 7, 8, 9, 10]}]</code></pre>\n</div>",
+        "releaseDate": "2022-08-03T00:00:00Z",
+        "resources": {
+            "javascript": {
+                "language": "javascript",
+                "sandboxCode": "// This file is initialized with a few test cases.\n// Feel free to add, edit, or remove test cases in\n// this file as you see fit!\n\nconst chai = require('chai');\nconst {expect} = chai;\n\nconst {flatten} = require('./program.js');\n\ndescribe('flatten', () => {\n  it('primitives do not change', () => {\n    expect(flatten(1)).to.equal(1);\n    expect(flatten(true)).to.be.true;\n    expect(flatten(false)).to.be.false;\n    expect(flatten('hello')).to.equal('hello');\n    expect(flatten('0')).to.equal('0');\n    expect(flatten('')).to.equal('');\n    expect(flatten(null)).to.be.null;\n    expect(flatten(undefined)).to.be.undefined;\n  });\n\n  it('nested arrays', () => {\n    expect(flatten([1, 2, [3, 4]])).to.deep.equal([1, 2, 3, 4]);\n    expect(flatten([1, 2, [3, 4, [5, 6]]])).to.deep.equal([1, 2, 3, 4, 5, 6]);\n    expect(flatten([1, 2, [3, 4, [5, 6], 7, 8], 9])).to.deep.equal([1, 2, 3, 4, 5, 6, 7, 8, 9]);\n    expect(flatten([1, 2, [3, 4, [5, 6, []], 7, 8], 9, [[], []]])).to.deep.equal([\n      1, 2, 3, 4, 5, 6, 7, 8, 9,\n    ]);\n  });\n\n  it('nested objects', () => {\n    expect(\n      flatten({\n        a: 1,\n        b: {c: 2, d: 3},\n      }),\n    ).to.deep.equal({\n      a: 1,\n      c: 2,\n      d: 3,\n    });\n\n    expect(\n      flatten({\n        a: 1,\n        b: {\n          c: 2,\n          d: {\n            e: null,\n            f: {g: undefined, h: true},\n            i: false,\n          },\n        },\n      }),\n    ).to.deep.equal({\n      a: 1,\n      c: 2,\n      e: null,\n      g: undefined,\n      h: true,\n      i: false,\n    });\n  });\n});\n",
+                "solutions": [
+                    "// Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n\nfunction flatten(value) {\n  if (typeof value !== 'object' || value === null) {\n    return value;\n  }\n\n  if (Array.isArray(value)) {\n    return flattenArray(value);\n  }\n\n  return flattenObject(value);\n}\n\nfunction flattenArray(array) {\n  return array.reduce((acc, curr) => acc.concat(flatten(curr)), []);\n}\n\nfunction flattenObject(object) {\n  const flattenedObj = {};\n\n  for (const [key, value] of Object.entries(object)) {\n    const valueIsObject =\n      typeof value === 'object' && value !== null && !Array.isArray(value);\n    const flattenedValue = flatten(value);\n\n    if (valueIsObject) {\n      Object.assign(flattenedObj, flattenedValue);\n    } else {\n      flattenedObj[key] = flattenedValue;\n    }\n  }\n\n  return flattenedObj;\n}\n\n// Do not edit the line below.\nexports.flatten = flatten;"
+                ],
+                "solutionsDisabled": false,
+                "startingCode": "function flatten(value) {\n  // Write your code here.\n}\n\n// Do not edit the line below.\nexports.flatten = flatten;\n",
+                "unitTests": "const chai = require('chai');\nconst spies = require('chai-spies');\n\nchai.use(spies);\nconst {expect} = chai;\n\nconst {flatten} = require('./program.js');\n\ndescribe('flatten', () => {\n  it('primitives do not change', () => {\n    expect(flatten(1)).to.equal(1);\n    expect(flatten(true)).to.be.true;\n    expect(flatten(false)).to.be.false;\n    expect(flatten('hello')).to.equal('hello');\n    expect(flatten('0')).to.equal('0');\n    expect(flatten('')).to.equal('');\n    expect(flatten(null)).to.be.null;\n    expect(flatten(undefined)).to.be.undefined;\n  });\n\n  it('empty arrays do not change', () => {\n    expect(flatten([])).to.deep.equal([]);\n  });\n\n  it('nested empty arrays are removed', () => {\n    expect(flatten([1, 2, 3, [], 4, 5])).to.deep.equal([1, 2, 3, 4, 5]);\n    expect(flatten([[], 1, 2, 3, [[], [], [[], []]], 4, 5, []])).to.deep.equal([1, 2, 3, 4, 5]);\n  });\n\n  it('nested arrays', () => {\n    expect(flatten([1, 2, [3, 4]])).to.deep.equal([1, 2, 3, 4]);\n    expect(flatten([1, 2, [3, 4, [5, 6]]])).to.deep.equal([1, 2, 3, 4, 5, 6]);\n    expect(flatten([1, 2, [3, 4, [5, 6], 7, 8], 9])).to.deep.equal([1, 2, 3, 4, 5, 6, 7, 8, 9]);\n    expect(flatten([1, 2, [3, 4, [5, 6, []], 7, 8], 9, [[], []]])).to.deep.equal([\n      1, 2, 3, 4, 5, 6, 7, 8, 9,\n    ]);\n  });\n\n  it('empty objects do not change', () => {\n    expect(flatten({})).to.deep.equal({});\n  });\n\n  it('nested empty objects are removed', () => {\n    expect(flatten({a: {}, b: {}})).to.deep.equal({});\n    expect(flatten({a: {}, b: {}, c: 1, d: 2})).to.deep.equal({c: 1, d: 2});\n    expect(flatten({a: {}, b: {c: {}, d: {e: {}}}, f: 1})).to.deep.equal({f: 1});\n  });\n\n  it('nested objects', () => {\n    expect(\n      flatten({\n        a: 1,\n        b: {c: 2, d: 3},\n      }),\n    ).to.deep.equal({\n      a: 1,\n      c: 2,\n      d: 3,\n    });\n\n    expect(\n      flatten({\n        a: 1,\n        b: {\n          c: 2,\n          d: {\n            e: null,\n            f: {g: undefined, h: true},\n            i: false,\n          },\n        },\n      }),\n    ).to.deep.equal({\n      a: 1,\n      c: 2,\n      e: null,\n      g: undefined,\n      h: true,\n      i: false,\n    });\n  });\n\n  it('nested arrays and objects together', () => {\n    expect(\n      flatten({\n        a: 123,\n        b: [1, 2, 3],\n        c: {\n          d: '123',\n          e: ['a', 'b', ['c', 'd']],\n        },\n      }),\n    ).to.deep.equal({\n      a: 123,\n      b: [1, 2, 3],\n      d: '123',\n      e: ['a', 'b', 'c', 'd'],\n    });\n\n    expect(\n      flatten({\n        a: 123,\n        b: [1, 2, 3, [4, 5, [6, 7]]],\n        c: {\n          d: '123',\n          e: [\n            'a',\n            'b',\n            ['c', 'd'],\n            {\n              f: 'hello',\n              g: null,\n              h: undefined,\n              i: 0,\n              j: true,\n              k: false,\n              l: {\n                m: 'world',\n                n: [1, 2, 3],\n              },\n            },\n          ],\n        },\n      }),\n    ).to.deep.equal({\n      a: 123,\n      b: [1, 2, 3, 4, 5, 6, 7],\n      d: '123',\n      e: [\n        'a',\n        'b',\n        'c',\n        'd',\n        {\n          f: 'hello',\n          g: null,\n          h: undefined,\n          i: 0,\n          j: true,\n          k: false,\n          m: 'world',\n          n: [1, 2, 3],\n        },\n      ],\n    });\n\n    expect(\n      flatten([\n        {\n          a: 123,\n          b: {\n            c: [1, 2, 3, [4]],\n          },\n          d: [5, 6, 7],\n        },\n        'hello',\n        {\n          e: true,\n          f: false,\n          g: 0,\n          h: null,\n          i: undefined,\n        },\n        'world',\n        [\n          [\n            8,\n            9,\n            10,\n            11,\n          ]\n        ],\n      ]),\n    ).to.deep.equal([\n      {\n        a: 123,\n        c: [1, 2, 3, 4],\n        d: [5, 6, 7],\n      },\n      'hello',\n      {\n        e: true,\n        f: false,\n        g: 0,\n        h: null,\n        i: undefined,\n      },\n      'world',\n      8,\n      9,\n      10,\n      11,\n    ]);\n  });\n\n  it('does not call native Array flat function', () => {\n    chai.spy.on(Array.prototype, 'flat');\n\n    flatten([]);\n    flatten({});\n    flatten([1, 2, [3, 4, {a: [1, 2]}]]);\n\n    expect(Array.prototype.flat).to.have.been.called.exactly(0);\n  });\n});\n"
+            }
+        },
+        "spaceTime": "",
+        "submissionStatistics": {
+            "correctCount": 1899,
+            "failureCount": 1637
+        },
+        "testStrategy": "SANDBOX_ONLY",
+        "tests": [],
+        "uid": "flatten",
+        "version": 0,
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "734554110"
+        },
+        "visualization": {
+            "inputType": null,
+            "outputType": null
+        }
+    },
+    "difficulty": 0,
+    "instructor": "Conner Ardman",
+    "name": "Flatten",
+    "releaseDate": "2022-08-03T00:00:00Z",
+    "type": "CODING_STANDARD",
+    "uid": "flatten"
+}

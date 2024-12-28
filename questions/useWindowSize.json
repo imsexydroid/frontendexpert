@@ -1,0 +1,79 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "React Hooks",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "assessmentSummary": null,
+        "category": "React Hooks",
+        "changelog": [],
+        "customInputVars": [],
+        "difficulty": 0,
+        "hints": [
+            "<p>\n  You can get the current window width and height with\n  <span>window.innerWidth</span> and <span>window.innerHeight</span>.\n</p>\n",
+            "\n<p>\n  When the window is resized, it fires a <span>resize</span> event.\n</p>"
+        ],
+        "isLongOutput": false,
+        "isSlowExecution": false,
+        "jsonTests": [],
+        "languagesSupported": [
+            "jsx"
+        ],
+        "name": "useWindowSize",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    Write a <span>useWindowSize</span> custom hook used to track changes to\n    the size of the browser window.\n  </p>\n\n  <p>\n    The <span>useWindowSize</span> hook should return an object with two\n    properties:\n  </p>\n\n  <ul>\n    <li>\n      <b>width</b>: The Current <span>innerWidth</span> of the window as a\n      number.\n    </li>\n    <li>\n      <b>height</b>: The Current <span>innerHeight</span> of the window as a\n      number.\n    </li>\n  </ul>\n\n  <p>\n    If either of these values changes, the hook should cause the component to\n    re-render with the new values.\n  </p>\n\n  <p>\n    In the event of a resize after an instance of a component using the\n    <span>useWindowSize</span> hook is unmounted, any created event listeners\n    should be removed.\n  </p>\n\n  <h3>Sample Usage</h3>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -10px\">\n  <pre\n    class=\"line-numbers\"\n  ><code class=\"language-javascript\">const {width, height} = useWindowSize();\n</code></pre>\n</div>",
+        "releaseDate": "2022-05-24T00:00:00Z",
+        "resources": {
+            "jsx": {
+                "language": "jsx",
+                "sandboxCode": "// This file is initialized with a few test cases.\n// Feel free to add, edit, or remove test cases in\n// this file as you see fit!\n\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\nimport React, {useState, StrictMode} from 'react';\nimport ReactDOM from 'react-dom';\nimport {act} from 'react-dom/test-utils';\nconst {JSDOM} = require('jsdom');\nimport {useWindowSize} from './program';\nconst chai = require('chai');\nconst spies = require('chai-spies');\nchai.use(spies);\nconst {expect, spy} = chai;\n\nconst resetSpies = () => {\n  spy.restore();\n  spy.on(console, 'error');\n};\n\n// JSDom defaults to a 1024x768 window\nconst INITIAL_WIDTH = 1024;\nconst INITIAL_HEIGHT = 768;\n\nlet rootContainer;\nlet nextWidth = INITIAL_WIDTH;\nlet nextHeight = INITIAL_HEIGHT;\n\nconst resetDom = () => {\n  const dom = new JSDOM({\n    url: 'http://localhost:3000',\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n\n  for (const [key, value] of Object.entries(React)) {\n    global[key] = value;\n  }\n\n  // Reset spies before importing the JS.\n  resetSpies();\n\n  delete require.cache[require.resolve('./program.js')];\n  require('./program.js');\n\n  rootContainer = document.createElement('div');\n  document.body.appendChild(rootContainer);\n  nextWidth = INITIAL_WIDTH;\n  nextHeight = INITIAL_HEIGHT;\n};\n\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\n\nfunction TestComponent() {\n  const {width, height} = useWindowSize();\n\n  const resize = (newWidth, newHeight) => {\n    window.innerWidth = newWidth;\n    window.innerHeight = newHeight;\n\n    const resizeEvent = new window.Event('resize', {bubbles: true});\n    window.dispatchEvent(resizeEvent);\n  };\n\n  return (\n    <>\n      <button id=\"resize\" onClick={() => resize(nextWidth, nextHeight)}>\n        Re-Render\n      </button>\n      <p id=\"width\">{width}</p>\n      <p id=\"height\">{height}</p>\n    </>\n  );\n}\n\ndescribe('useWindowSize', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  it('correct width and height values on mount', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n\n    expect(document.getElementById('width').textContent).to.equal(String(INITIAL_WIDTH));\n    expect(document.getElementById('height').textContent).to.equal(String(INITIAL_HEIGHT));\n  });\n\n  it('width and height can be resized together', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n\n    nextWidth = 1500;\n    nextHeight = 1200;\n    act(() => {\n      document.getElementById('resize').click();\n    });\n\n    expect(document.getElementById('width').textContent).to.equal('1500');\n    expect(document.getElementById('height').textContent).to.equal('1200');\n  });\n});\n",
+                "solutions": [
+                    "// Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n\nimport {useState, useEffect} from 'react';\n\nfunction useWindowSize() {\n  const [width, setWidth] = useState(window.innerWidth);\n  const [height, setHeight] = useState(window.innerHeight);\n\n  useEffect(() => {\n    const updateWindowSize = () => {\n      setWidth(window.innerWidth);\n      setHeight(window.innerHeight);\n    };\n\n    window.addEventListener('resize', updateWindowSize);\n\n    return () => window.removeEventListener('resize', updateWindowSize);\n  }, []);\n\n  return {\n    width,\n    height,\n  };\n}\n\n// Do not edit the line below.\nexports.useWindowSize = useWindowSize;\n"
+                ],
+                "solutionsDisabled": false,
+                "startingCode": "import React from 'react';\n\nfunction useWindowSize() {\n  // Write your code here.\n}\n\n// Do not edit the line below.\nexports.useWindowSize = useWindowSize;\n",
+                "unitTests": "/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\nimport React, {useState, StrictMode} from 'react';\nimport ReactDOM from 'react-dom';\nimport {act} from 'react-dom/test-utils';\nconst {JSDOM} = require('jsdom');\nimport {useWindowSize} from './program';\nconst chai = require('chai');\nconst spies = require('chai-spies');\nchai.use(spies);\nconst {expect, spy} = chai;\n\nconst resetSpies = () => {\n  spy.restore();\n  spy.on(console, 'error');\n};\n\n// JSDom defaults to a 1024x768 window\nconst INITIAL_WIDTH = 1024;\nconst INITIAL_HEIGHT = 768;\n\nlet rootContainer;\nlet nextWidth = INITIAL_WIDTH;\nlet nextHeight = INITIAL_HEIGHT;\n\nconst resetDom = () => {\n  const dom = new JSDOM({\n    url: 'http://localhost:3000',\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n\n  for (const [key, value] of Object.entries(React)) {\n    global[key] = value;\n  }\n\n  // Reset spies before importing the JS.\n  resetSpies();\n\n  delete require.cache[require.resolve('./program.js')];\n  require('./program.js');\n\n  rootContainer = document.createElement('div');\n  document.body.appendChild(rootContainer);\n  nextWidth = INITIAL_WIDTH;\n  nextHeight = INITIAL_HEIGHT;\n};\n\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\n\nfunction TestComponent() {\n  const {width, height} = useWindowSize();\n\n  const resize = (newWidth, newHeight) => {\n    window.innerWidth = newWidth;\n    window.innerHeight = newHeight;\n\n    const resizeEvent = new window.Event('resize', {bubbles: true});\n    window.dispatchEvent(resizeEvent);\n  };\n\n  return (\n    <>\n      <button id=\"resize\" onClick={() => resize(nextWidth, nextHeight)}>\n        Re-Render\n      </button>\n      <p id=\"width\">{width}</p>\n      <p id=\"height\">{height}</p>\n    </>\n  );\n}\n\ndescribe('useWindowSize', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  it('correct width and height values on mount', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n\n    expect(document.getElementById('width').textContent).to.equal(String(INITIAL_WIDTH));\n    expect(document.getElementById('height').textContent).to.equal(String(INITIAL_HEIGHT));\n  });\n\n  it('resizing width updates width value', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n\n    nextWidth = 1200;\n    act(() => {\n      document.getElementById('resize').click();\n    });\n\n    expect(document.getElementById('width').textContent).to.equal('1200');\n    expect(document.getElementById('height').textContent).to.equal(String(INITIAL_HEIGHT));\n  });\n\n  it('resizing height updates height value', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n\n    nextHeight = 1000;\n    act(() => {\n      document.getElementById('resize').click();\n    });\n\n    expect(document.getElementById('width').textContent).to.equal(String(INITIAL_WIDTH));\n    expect(document.getElementById('height').textContent).to.equal('1000');\n  });\n\n  it('width and height can be resized together', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n\n    nextWidth = 1500;\n    nextHeight = 1200;\n    act(() => {\n      document.getElementById('resize').click();\n    });\n\n    expect(document.getElementById('width').textContent).to.equal('1500');\n    expect(document.getElementById('height').textContent).to.equal('1200');\n  });\n\n  it('width and height can be resized multiple times together', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n\n    nextWidth = 1500;\n    nextHeight = 1200;\n    act(() => {\n      document.getElementById('resize').click();\n    });\n\n    expect(document.getElementById('width').textContent).to.equal('1500');\n    expect(document.getElementById('height').textContent).to.equal('1200');\n\n    nextWidth = 800;\n    nextHeight = 750;\n    act(() => {\n      document.getElementById('resize').click();\n    });\n\n    expect(document.getElementById('width').textContent).to.equal('800');\n    expect(document.getElementById('height').textContent).to.equal('750');\n\n    nextWidth = 2000;\n    nextHeight = 1400;\n    act(() => {\n      document.getElementById('resize').click();\n    });\n\n    expect(document.getElementById('width').textContent).to.equal('2000');\n    expect(document.getElementById('height').textContent).to.equal('1400');\n  });\n\n  it('does not continue listening to events after unmount', async () => {\n    const WrapperComponent = () => {\n      const [isVisible, setIsVisible] = useState(true);\n\n      // StrictMode necessary to show console errors of state updates on unmounted component\n      return (\n        <StrictMode>\n          <button id=\"toggle\" onClick={() => setIsVisible(!isVisible)}>\n            Toggle\n          </button>\n          {isVisible && <TestComponent />}\n        </StrictMode>\n      );\n    };\n\n    act(() => {\n      ReactDOM.render(<WrapperComponent />, rootContainer);\n    });\n    act(() => {\n      document.getElementById('toggle').click();\n    });\n\n    nextWidth = 2000;\n    nextHeight = 1400;\n    window.innerWidth = nextWidth;\n    window.innerHeight = nextHeight;\n\n    const resizeEvent = new window.Event('resize', {bubbles: true});\n    window.dispatchEvent(resizeEvent);\n    expect(console.error).to.have.been.called.exactly(0);\n  });\n});\n"
+            }
+        },
+        "spaceTime": "",
+        "submissionStatistics": {
+            "correctCount": 1109,
+            "failureCount": 126
+        },
+        "testStrategy": "SANDBOX_ONLY",
+        "tests": [],
+        "uid": "useWindowSize",
+        "version": 0,
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "705952705"
+        },
+        "visualization": {
+            "inputType": null,
+            "outputType": null
+        }
+    },
+    "difficulty": 0,
+    "instructor": "Conner Ardman",
+    "name": "useWindowSize",
+    "releaseDate": "2022-05-24T00:00:00Z",
+    "type": "CODING_STANDARD",
+    "uid": "useWindowSize"
+}

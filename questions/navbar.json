@@ -1,0 +1,67 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "CSS",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "category": "CSS",
+        "hints": [
+            "<p>Use the <span>list-style-type</span> property to remove the default bullet points on list items.</p>",
+            "<p>Since this layout is 1 dimensional (a single row), we recommend solving this problem with Flexbox.</p>",
+            "<p>A combination of the <span>:not</span> and <span>:last-of-type</span> pseudo classes can be used to place the borders on the correct elements.</p>"
+        ],
+        "languageToWrite": "css",
+        "name": "Navbar",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    You're given an HTML file for the top navigation bar of a website. The\n    navigation bar consists of two unordered lists, containing three and two\n    list items, respectively.\n  </p>\n  <p>Style this navigation bar as follows:</p>\n  <ul>\n    <li>\n      The navigation bar should be a horizontal bar, spanning the entire width\n      of its parent; all of its list items should be displayed in a single row.\n    </li>\n    <li>\n      The first unordered list (containing Product, Testimonials, and Pricing)\n      should appear on the far left side of the navigation bar. The second\n      unordered list (containing Team and Contact Us) should appear on the far\n      right side of the navigation bar.\n    </li>\n    <li>\n      The navigation bar should have a background color of\n      <div class=\"CodeEditor-selectable\">#6e072d</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: #6e072d\"\n      ></span>\n      and a\n      <div class=\"CodeEditor-selectable\">white</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: white\"\n      ></span>\n      font color.\n    </li>\n    <li>\n      The unordered lists should have no margin or padding. However, the\n      individual list items should have vertical padding equal to their font\n      size and horizontal padding equal to their font size multiplied by 1.5;\n      their font size should be 18px.\n    </li>\n    <li>\n      Hovering over a list item should change its background color to\n      <div class=\"CodeEditor-selectable\">#b90e4d</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: #b90e4d\"\n      ></span>\n      and the mouse cursor to a pointer.\n    </li>\n    <li>\n      There should be a solid,\n      <div class=\"CodeEditor-selectable\">white</div>\n      <span\n        class=\"CodeEditor-colorSquare\"\n        style=\"background-color: white\"\n      ></span\n      >, 2px border separating the list items. However this border shouldn't\n      appear on the right side of Pricing or on the left side of Team.\n    </li>\n    <li>\n      The individual list items shouldn't have bullet points next to them.\n    </li>\n  </ul>\n  <p>\n    Your submission will be assessed based on how similar your\n    <b>Browser Output</b> is to the <b>Expected Output</b>; it should be nearly\n    identical.\n  </p>\n</div>",
+        "promptCode": {
+            "html": "<nav>\n  <ul>\n    <li>Product</li>\n    <li>Testimonials</li>\n    <li>Pricing</li>\n  </ul>\n  <ul>\n    <li>Team</li>\n    <li>Contact Us</li>\n  </ul>\n</nav>\n"
+        },
+        "reactConfig": null,
+        "solutions": {
+            "css": [
+                "/* Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved. */\n\nnav {\n  display: flex;\n  justify-content: space-between;\n  background-color: #6e072d;\n  color: white;\n  font-size: 18px;\n}\n\nul {\n  display: flex;\n  padding: 0;\n  margin: 0;\n}\n\nli {\n  padding: 1em 1.5em;\n  list-style-type: none;\n  cursor: pointer;\n}\n\nli:not(:last-of-type) {\n  border-right: 2px solid white;\n}\n\nli:hover {\n  background-color: #b90e4d;\n}"
+            ]
+        },
+        "startingCode": {
+            "css": "/*  Write your code here. */\n\n/* Delete this ruleset. */\nbody {\n  background-color: grey;\n}\n"
+        },
+        "submissionStatistics": {
+            "correctCount": 4418,
+            "failureCount": 8228
+        },
+        "testHarness": {
+            "sandboxCode": "",
+            "unitTests": ""
+        },
+        "testStrategy": "SCREENSHOT",
+        "uid": "navbar",
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 10,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "647099203"
+        }
+    },
+    "difficulty": null,
+    "instructor": "Conner Ardman",
+    "name": "Navbar",
+    "releaseDate": "2021-05-24T00:00:00Z",
+    "type": "CODING_FRONTEND",
+    "uid": "navbar"
+}

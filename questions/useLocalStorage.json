@@ -1,0 +1,79 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "React Hooks",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "assessmentSummary": null,
+        "category": "React Hooks",
+        "changelog": [],
+        "customInputVars": [],
+        "difficulty": 0,
+        "hints": [
+            "<p>\n  A value can be added to localStorage with\n  <span>window.localStorage.setItem(key, value)</span>, and that value can be\n  accessed with <span>window.localStorage.getItem(key)</span>.\n</p>"
+        ],
+        "isLongOutput": false,
+        "isSlowExecution": false,
+        "jsonTests": [],
+        "languagesSupported": [
+            "jsx"
+        ],
+        "name": "useLocalStorage",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    Write a <span>useLocalStorage</span> custom hook that takes in a required\n    <span>key</span> as a string, and an optional <span>initialValue</span>.\n  </p>\n  <p>\n    Calling <span>useLocalStorage</span> in a component should save the\n    <span>initialValue</span> in localStorage at the given <span>key</span> when\n    the component first mounts. If a value already exists at that key, the\n    <span>initialValue</span> parameter should be ignored.\n  </p>\n\n  <p>\n    The <span>useLocalStorage</span> function should return an array with the\n    current value as the first element and a setter function as the second element.\n    The setter function should take in a new value as a parameter and update\n    localStorage at the original <span>key</span>.\n  </p>\n  <p>\n    When the setter function is called, the component should re-render, just\n    as it would when a standard piece of state is updated.\n  </p>\n\n  <p>\n    Any value added to localStorage should first be passed to\n    <span>JSON.stringify</span>. When reading the value from localStorage,\n    <span>JSON.parse</span> should be used to parse the original value.\n  </p>\n\n  <p>\n    For simplicity, you can asssume the <span>key</span> parameter will not\n    change between renders.\n  </p>\n\n  <h3>Sample Usage</h3>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -10px\">\n  <pre\n    class=\"line-numbers\"\n  ><code class=\"language-javascript\">function SaveValues() {\n  const [value, setValue] = useLocalStorage('name', '');\n  return &lt;input value={value} onChange={(e) => setValue(e.target.value)} /&gt;;\n}</code></pre>\n</div>",
+        "releaseDate": "2022-05-24T00:00:00Z",
+        "resources": {
+            "jsx": {
+                "language": "jsx",
+                "sandboxCode": "// This file is initialized with a few test cases.\n// Feel free to add, edit, or remove test cases in\n// this file as you see fit!\n\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\nimport React, {useState, StrictMode} from 'react';\nimport ReactDOM from 'react-dom';\nimport {act} from 'react-dom/test-utils';\nconst {JSDOM} = require('jsdom');\nimport {useLocalStorage} from './program';\nconst chai = require('chai');\nconst {expect} = chai;\n\nlet rootContainer;\nlet nextValue;\nlet store = {};\n\nconst resetDom = () => {\n  const dom = new JSDOM({\n    url: 'http://localhost:3000',\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n\n  Object.defineProperty(window, 'localStorage', {\n    value: {\n      getItem: function (key) {\n        return store[key] ?? null;\n      },\n      setItem: function (key, value) {\n        store[key] = value.toString();\n      },\n      removeItem: function (key) {\n        delete store[key];\n      },\n      clear: function () {\n        store = {};\n      },\n    },\n  });\n  global.localStorage = window.localStorage;\n\n  for (const [key, value] of Object.entries(React)) {\n    global[key] = value;\n  }\n\n  delete require.cache[require.resolve('./program.js')];\n  require('./program.js');\n\n  rootContainer = document.createElement('div');\n  document.body.appendChild(rootContainer);\n  nextValue = undefined;\n  store = {};\n};\n\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\n\nfunction TestComponent({initialValue}) {\n  const [value, setValue] = useLocalStorage('key', initialValue);\n\n  return (\n    <>\n      <button id=\"set-value\" onClick={() => setValue(nextValue)}>\n        Set Value\n      </button>\n      <p id=\"value\">{value}</p>\n    </>\n  );\n}\n\ndescribe('useLocalStorage', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  it('has correct initial value', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent initialValue=\"test\" />, rootContainer);\n    });\n\n    expect(document.getElementById('value').textContent).to.equal('test');\n  });\n\n  it('has correct value after update', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent initialValue=\"test\" />, rootContainer);\n    });\n\n    nextValue = 'hello world';\n    act(() => {\n      document.getElementById('set-value').click();\n    });\n    expect(document.getElementById('value').textContent).to.equal('hello world');\n  });\n});\n",
+                "solutions": [
+                    "// Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n\nimport {useState} from 'react';\n\nfunction useLocalStorage(key, initialValue) {\n  const [value, setValue] = useState(() => {\n    const savedValue = JSON.parse(localStorage.getItem(key));\n    if (savedValue == null) {\n      localStorage.setItem(key, JSON.stringify(initialValue));\n      return initialValue;\n    }\n    return savedValue;\n  });\n\n  const setValueAndLocalStorage = newValue => {\n    localStorage.setItem(key, JSON.stringify(newValue));\n    setValue(newValue);\n  };\n\n  return [value, setValueAndLocalStorage];\n}\n\n// Do not edit the line below.\nexports.useLocalStorage = useLocalStorage;\n",
+                    "// Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n\nimport {useState, useEffect} from 'react';\n\nfunction useLocalStorage(key, initialValue) {\n  const [value, setValue] = useState(() => JSON.parse(localStorage.getItem(key)) ?? initialValue);\n\n  useEffect(() => {\n    localStorage.setItem(key, JSON.stringify(value));\n  }, [key, value]);\n\n  return [value, setValue];\n}\n\n// Do not edit the line below.\nexports.useLocalStorage = useLocalStorage;\n"
+                ],
+                "solutionsDisabled": false,
+                "startingCode": "import React from 'react';\n\nfunction useLocalStorage(key, initialValue) {\n  // Write your code here.\n}\n\n// Do not edit the line below.\nexports.useLocalStorage = useLocalStorage;\n",
+                "unitTests": "/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\nimport React, {useState, StrictMode} from 'react';\nimport ReactDOM from 'react-dom';\nimport {act} from 'react-dom/test-utils';\nconst {JSDOM} = require('jsdom');\nimport {useLocalStorage} from './program';\nconst chai = require('chai');\nconst {expect} = chai;\n\nlet rootContainer;\nlet nextValue;\nlet store = {};\n\nconst resetDom = () => {\n  const dom = new JSDOM({\n    url: 'http://localhost:3000',\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n\n  Object.defineProperty(window, 'localStorage', {\n    value: {\n      getItem: function (key) {\n        return store[key] ?? null;\n      },\n      setItem: function (key, value) {\n        store[key] = value.toString();\n      },\n      removeItem: function (key) {\n        delete store[key];\n      },\n      clear: function () {\n        store = {};\n      },\n    },\n  });\n  global.localStorage = window.localStorage;\n\n  for (const [key, value] of Object.entries(React)) {\n    global[key] = value;\n  }\n\n  delete require.cache[require.resolve('./program.js')];\n  require('./program.js');\n\n  rootContainer = document.createElement('div');\n  document.body.appendChild(rootContainer);\n  nextValue = undefined;\n  store = {};\n};\n\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\n\nfunction TestComponent({initialValue}) {\n  const [value, setValue] = useLocalStorage('key', initialValue);\n\n  return (\n    <>\n      <button id=\"set-value\" onClick={() => setValue(nextValue)}>\n        Set Value\n      </button>\n      <p id=\"value\">{value}</p>\n    </>\n  );\n}\n\ndescribe('useLocalStorage', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  it('has correct initial value', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent initialValue=\"test\" />, rootContainer);\n    });\n\n    expect(document.getElementById('value').textContent).to.equal('test');\n  });\n\n  it('has correct value after update', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent initialValue=\"test\" />, rootContainer);\n    });\n\n    nextValue = 'hello world';\n    act(() => {\n      document.getElementById('set-value').click();\n    });\n    expect(document.getElementById('value').textContent).to.equal('hello world');\n  });\n\n  it('can be updated multiple times', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent initialValue=\"test\" />, rootContainer);\n    });\n\n    nextValue = 'hello world';\n    act(() => {\n      document.getElementById('set-value').click();\n    });\n    expect(document.getElementById('value').textContent).to.equal('hello world');\n\n    nextValue = '1234';\n    act(() => {\n      document.getElementById('set-value').click();\n    });\n    expect(document.getElementById('value').textContent).to.equal('1234');\n  });\n\n  it('localStorage store gets initialValue', async () => {\n    act(() => {\n      ReactDOM.render(<TestComponent initialValue=\"test\" />, rootContainer);\n    });\n    expect(JSON.parse(store.key)).to.equal('test');\n  });\n\n  it('localStorage store is updated', async () => {\n    act(() => {\n      ReactDOM.render(<TestComponent initialValue=\"test\" />, rootContainer);\n    });\n\n    nextValue = 'hello world';\n    act(() => {\n      document.getElementById('set-value').click();\n    });\n    expect(JSON.parse(store.key)).to.equal('hello world');\n\n    nextValue = '1234';\n    act(() => {\n      document.getElementById('set-value').click();\n    });\n    expect(JSON.parse(store.key)).to.equal('1234');\n  });\n\n  it('state is persisted between mounts', () => {\n    const WrapperComponent = () => {\n      const [isVisible, setIsVisible] = useState(true);\n\n      return (\n        <>\n          <button id=\"toggle\" onClick={() => setIsVisible(!isVisible)}>\n            Toggle\n          </button>\n          {isVisible && <TestComponent initialValue=\"test\" />}\n        </>\n      );\n    };\n\n    act(() => {\n      ReactDOM.render(<WrapperComponent />, rootContainer);\n    });\n\n    nextValue = 'hello world';\n    act(() => {\n      document.getElementById('set-value').click();\n    });\n\n    act(() => {\n      document.getElementById('toggle').click();\n    });\n\n    act(() => {\n      document.getElementById('toggle').click();\n    });\n\n    expect(JSON.parse(store.key)).to.equal('hello world');\n    expect(document.getElementById('value').textContent).to.equal('hello world');\n  });\n\n  it('can have multiple pieces of state', async () => {\n    function TestComponentTwoInstances() {\n      const [value1, setValue1] = useLocalStorage('key1', 'value1');\n      const [value2, setValue2] = useLocalStorage('key2', 'value2');\n\n      return (\n        <>\n          <button id=\"set-value1\" onClick={() => setValue1(nextValue)}>\n            Set Value1\n          </button>\n          <p id=\"value1\">{value1}</p>\n          <button id=\"set-value2\" onClick={() => setValue2(nextValue)}>\n            Set Value2\n          </button>\n          <p id=\"value2\">{value2}</p>\n        </>\n      );\n    }\n\n    act(() => {\n      ReactDOM.render(<TestComponentTwoInstances />, rootContainer);\n    });\n\n    expect(document.getElementById('value1').textContent).to.equal('value1');\n    expect(document.getElementById('value2').textContent).to.equal('value2');\n    expect(JSON.parse(store['key1'])).to.equal('value1');\n    expect(JSON.parse(store['key2'])).to.equal('value2');\n\n    nextValue = 'hello world';\n    act(() => {\n      document.getElementById('set-value1').click();\n    });\n    expect(document.getElementById('value1').textContent).to.equal('hello world');\n    expect(document.getElementById('value2').textContent).to.equal('value2');\n    expect(JSON.parse(store.key1)).to.equal('hello world');\n    expect(JSON.parse(store.key2)).to.equal('value2');\n\n    nextValue = '1234';\n    act(() => {\n      document.getElementById('set-value2').click();\n    });\n    expect(document.getElementById('value1').textContent).to.equal('hello world');\n    expect(document.getElementById('value2').textContent).to.equal('1234');\n    expect(JSON.parse(store.key1)).to.equal('hello world');\n    expect(JSON.parse(store.key2)).to.equal('1234');\n  });\n});\n"
+            }
+        },
+        "spaceTime": "",
+        "submissionStatistics": {
+            "correctCount": 1426,
+            "failureCount": 255
+        },
+        "testStrategy": "SANDBOX_ONLY",
+        "tests": [],
+        "uid": "useLocalStorage",
+        "version": 0,
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "707141478"
+        },
+        "visualization": {
+            "inputType": null,
+            "outputType": null
+        }
+    },
+    "difficulty": 0,
+    "instructor": "Conner Ardman",
+    "name": "useLocalStorage",
+    "releaseDate": "2022-05-24T00:00:00Z",
+    "type": "CODING_STANDARD",
+    "uid": "useLocalStorage"
+}

@@ -1,0 +1,66 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "CSS",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "category": "CSS",
+        "hints": [
+            "<p>\n  This problem can be solved in a variety of ways, but using CSS Grid will likely be the simplest\n  given the multi-column and mulit-row layout.\n</p>",
+            "<p>\n  The underline created by <span>text-decoration</span> can be moved with the\n  <span>text-underline-offset</span> property.\n</p>"
+        ],
+        "languageToWrite": "css",
+        "name": "Notifications Menu",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    You're given an HTML file containing the markup for a notifications menu. Using only CSS,\n    replicate the expected output following these specifications:\n  </p>\n  <ul>\n    <li>\n      The overall wrapper container has a width of 280px, 10px of padding on\n      each side (creating 300px of total width), a border-radius of 10px, and a\n      background color of\n      <div class=\"CodeEditor-selectable\">lightgrey</div>\n      <span class=\"CodeEditor-colorSquare\" style=\"background-color: lightgrey\"></span>.\n    </li>\n    <li>\n      The \"Notifications\" heading is horizontally centered, and the text is\n      underlined. There is 10px of vertical spacing between the heading and the\n      first notification. All other default margin from this heading should be\n      removed.\n    </li>\n\n    <li>\n      There is 10px of vertical spacing between each notification. Each notification is horizontally\n      centered, with 10px of spacing between the notification and the edge of the wrapper. Each\n      notification has 10px of padding on all sides, a border-radius of 10px and a background color\n      of\n      <div class=\"CodeEditor-selectable\">white</div>\n      <span class=\"CodeEditor-colorSquare\" style=\"background-color: white\"></span>.\n    </li>\n\n    <li>\n      Each notification has an image, which is 100px by 100px and a perfect circle. These images\n      also have a solid,\n      <div class=\"CodeEditor-selectable\">black</div>\n      <span class=\"CodeEditor-colorSquare\" style=\"background-color: black\"></span>, 1px border.\n    </li>\n\n    <li>\n      The notification paragraph is on right of the image, with 10px of spacing\n      between them. All other default margin from the paragraphs should be removed.\n      Any text within the <span>.user</span> span is bold.\n    </li>\n\n    <li>\n      The span with the <span>time</span> class is at the bottom right of the notification.\n      This text has a normal font-weight, a font-size of 12px, and it is italicized.\n    </li>\n\n    <li>\n      The \"View More\" button is 10px below the bottom notification. This button has the same width\n      as the notifications, and it is horizontally centered. This button has a font-size of 16px,\n      a border-radius of 10px, 10px of padding on all sides, a background color of\n      <div class=\"CodeEditor-selectable\">#02203c</div>\n      <span class=\"CodeEditor-colorSquare\" style=\"background-color: #02203c\"></span> and a text\n      color of\n      <div class=\"CodeEditor-selectable\">white</div>\n      <span class=\"CodeEditor-colorSquare\" style=\"background-color: white\"></span>.\n    </li>\n  </ul>\n  <p>\n    Your submission will be assessed based on how similar your\n    <b>Browser Output</b> is to the <b>Expected Output</b>; it should be nearly identical.\n  </p>\n</div>",
+        "promptCode": {
+            "html": "<div id=\"wrapper\">\n  <h1>Notifications</h1>\n\n  <div id=\"notifications\">\n    <div class=\"notification\">\n      <img src=\"https://assets.algoexpert.io/course-assets/frontendexpert/clement.png\" alt=\"Clement Mihailescu\" />\n      <p><span class=\"user\">Clement Mihailescu</span> commented on your recent post.</p>\n      <span class=\"time\">15 minutes ago</span>\n    </div>\n\n    <div class=\"notification\">\n      <img src=\"https://assets.algoexpert.io/course-assets/frontendexpert/conner.png\" alt=\"Conner Ardman\" />\n      <p><span class=\"user\">Conner Ardman</span> shared a new photo.</p>\n      <span class=\"time\">3 hours ago</span>\n    </div>\n\n    <div class=\"notification\">\n      <img src=\"https://assets.algoexpert.io/course-assets/frontendexpert/antoine.png\" alt=\"Antoine Pourchet\" />\n      <p>\n        Congratulate <span class=\"user\">Antoine Pourchet</span> for starting a new position as CTO\n        at AlgoExpert.\n      </p>\n      <span class=\"time\">5 years ago</span>\n    </div>\n  </div>\n\n  <button>View More</button>\n</div>\n"
+        },
+        "reactConfig": null,
+        "solutions": {
+            "css": [
+                "/* Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved. */\n\n#wrapper {\n  width: 280px;\n  padding: 10px;\n  border-radius: 10px;\n  background-color: lightgrey;\n}\n\nh1 {\n  text-align: center;\n  margin: 0 0 10px 0;\n  text-decoration: underline;\n}\n\n#notifications {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n.notification {\n  display: grid;\n  grid-template-areas:\n    'photo text'\n    'photo time';\n  gap: 10px;\n  padding: 10px;\n  border-radius: 10px;\n  background-color: white;\n}\n\n.time {\n  grid-area: time;\n  align-self: end;\n  justify-self: end;\n  margin: 0;\n  font-size: 12px;\n  font-style: italic;\n}\n\np {\n  grid-area: text;\n  margin: 0;\n}\n\nimg {\n  grid-area: photo;\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  border: 1px solid black;\n}\n\n.user {\n  font-weight: bold;\n}\n\nbutton {\n  width: 100%;\n  margin-top: 10px;\n  padding: 10px;\n  border-radius: 10px;\n  font-size: 16px;\n  background-color: #02203c;\n  color: white;\n}"
+            ]
+        },
+        "startingCode": {
+            "css": "/* Write your code here. */\n\n#wrapper {\n  background-color: lightgrey;\n}"
+        },
+        "submissionStatistics": {
+            "correctCount": 1513,
+            "failureCount": 3226
+        },
+        "testHarness": {
+            "sandboxCode": "",
+            "unitTests": ""
+        },
+        "testStrategy": "SCREENSHOT",
+        "uid": "notifications-menu",
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "734523370"
+        }
+    },
+    "difficulty": null,
+    "instructor": "Conner Ardman",
+    "name": "Notifications Menu",
+    "releaseDate": "2022-08-03T00:00:00Z",
+    "type": "CODING_FRONTEND",
+    "uid": "notifications-menu"
+}

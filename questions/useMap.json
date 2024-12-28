@@ -1,0 +1,79 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "React Hooks",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "assessmentSummary": null,
+        "category": "React Hooks",
+        "changelog": [],
+        "customInputVars": [],
+        "difficulty": 0,
+        "hints": [
+            "<p>\n  <span>delete</span> is a reserved word in JavaScript, so make sure not to\n  name any functions or variables this (but it can be a value in an object).\n</p>\n",
+            "\n<p>\n  The <span>useCallback</span> and <span>useMemo</span> hooks can be used to\n  ensure a value is static between renders.\n</p>"
+        ],
+        "isLongOutput": false,
+        "isSlowExecution": false,
+        "jsonTests": [],
+        "languagesSupported": [
+            "jsx"
+        ],
+        "name": "useMap",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    Write a <span>useMap</span> custom hook that works as a wrapper around\n    the native JavaScript <a\n      class=\"Link Link--fe\"\n      href=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map\"\n      target=\"_blank\"\n      >Map</a\n    > object. The function takes in a single optional <span>intialValue</span>\n    parameter, which is passed directly to the <span>Map</span> constructor\n    during the initial render.\n  </p>\n\n  <p>\n    The <span>useMap</span> function should create a Map on mount and return\n    an object with the following properties:\n  </p>\n\n  <ul>\n    <li>\n      <span>map</span>: The underlying Map object.\n    </li>\n    <li>\n      <span>set(key, value)</span>: A function to add a new key-value pair to\n      the Map or to override the value of an existing key.\n    </li>\n    <li>\n      <span>delete(key)</span>: A function to delete a key from the Map if it\n      exists.\n    </li>\n    <li>\n      <span>clear()</span>: A function to clear out all entries from the map.\n    </li>\n  </ul>\n\n  <p>\n    All three of the returned functions (set, delete, and clear) should be\n    static, meaning that the same function should be returned on every render\n    for a given usage of <span>useMap</span> in a component instance. However,\n    the map itself does not need to be static. Calling any of these functions\n    should cause the component instance to rerender.\n  </p>\n  <h3>Sample Usage</h3>\n</div>\n<div class=\"code-wrapper prism\" style=\"margin-top: -10px\">\n  <pre\n    class=\"line-numbers\"\n  ><code class=\"language-javascript\">const {map, set, delete: del, clear} = useMap([\n  ['test', 123],\n  [456, 'hello world'],\n]);\n\nconsole.log(map.get('test')); // 123\nconsole.log(map.get(456)); // 'hello world'\n\nset(789, true);\n\n// After rerender:\nconsole.log(map.get('test')); // 123\nconsole.log(map.get(456)); // 'hello world'\nconsole.log(map.get(789)); // true\n\ndel(456);\n\n// After rerender:\nconsole.log(map.get('test')); // 123\nconsole.log(map.get(456)); // undefined\nconsole.log(map.get(789)); // true\n\nclear();\n\n// After rerender:\nconsole.log(map.get('test')); // undefined\nconsole.log(map.get(456)); // undefined\nconsole.log(map.get(789)); // undefined</code></pre>\n</div>",
+        "releaseDate": "2022-09-10T00:00:00Z",
+        "resources": {
+            "jsx": {
+                "language": "jsx",
+                "sandboxCode": "// This file is initialized with a few test cases.\n// Feel free to add, edit, or remove test cases in\n// this file as you see fit!\n\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\nimport React from 'react';\nimport ReactDOM from 'react-dom';\nimport {act} from 'react-dom/test-utils';\nconst {JSDOM} = require('jsdom');\nimport {useMap} from './program';\nconst chai = require('chai');\nconst {expect} = chai;\n\nlet rootContainer;\nlet mapControls;\n\nconst resetDom = () => {\n  const dom = new JSDOM({\n    url: 'http://localhost:3000',\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n\n  for (const [key, value] of Object.entries(React)) {\n    global[key] = value;\n  }\n\n  delete require.cache[require.resolve('./program.js')];\n  require('./program.js');\n\n  rootContainer = document.createElement('div');\n  document.body.appendChild(rootContainer);\n  mapControls = undefined;\n};\n\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\n\nfunction TestComponent({initialValue}) {\n  mapControls = useMap(initialValue);\n  const [rerender, setRerender] = useState(true);\n  return (\n    <div>\n      <button id=\"rerender\" onClick={() => setRerender(!rerender)}>Rerender</button>\n    </div>\n  );\n}\n\ndescribe('useMap', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  it('creates an empty map on mount', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n    expect(mapControls.map instanceof Map).to.be.true;\n    expect(mapControls.map.size).to.equal(0);\n  });\n\n  it('map can have an initialValue', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent initialValue={[\n        ['abc', 123],\n        [456, 'def'],\n      ]} />, rootContainer);\n    });\n    expect(mapControls.map instanceof Map).to.be.true;\n    expect(mapControls.map.size).to.equal(2);\n    expect(mapControls.map.get('abc')).to.equal(123);\n    expect(mapControls.map.get(456)).to.equal('def');\n  });\n\n  it('set function adds a value to the map', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n    mapControls.set(123, 'abc');\n    expect(mapControls.map.size).to.equal(1);\n    expect(mapControls.map.get(123)).to.equal('abc');\n  });\n\n  it('set, delete and clear functions are static', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n    const savedControls = [mapControls.set, mapControls.delete, mapControls.clear];\n\n    act(() => {\n      document.getElementById('rerender').click();\n    });\n    expect([mapControls.set, mapControls.delete, mapControls.clear]).to.deep.equal(savedControls);\n  });\n});\n",
+                "solutions": [
+                    "// Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved.\n\nimport {useState, useCallback} from 'react';\n\nfunction useMap(initialValue) {\n  const [map, setMap] = useState(new Map(initialValue));\n\n  const set = useCallback((key, value) => {\n    setMap(prevMap => {\n      const newMap = new Map(prevMap);\n      newMap.set(key, value);\n      return newMap;\n    });\n  }, []);\n\n  const del = useCallback(key => {\n    setMap(prevMap => {\n      const newMap = new Map(prevMap);\n      newMap.delete(key);\n      return newMap;\n    });\n  }, []);\n\n  const clear = useCallback(() => {\n    setMap(new Map());\n  }, []);\n\n  return {\n    map,\n    set,\n    delete: del,\n    clear,\n  };\n}\n\n// Do not edit the line below.\nexports.useMap = useMap;\n"
+                ],
+                "solutionsDisabled": false,
+                "startingCode": "import React from 'react';\n\nfunction useMap(initialValue) {\n  // Write your code here.\n}\n\n// Do not edit the line below.\nexports.useMap = useMap;\n",
+                "unitTests": "/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\nimport React from 'react';\nimport ReactDOM from 'react-dom';\nimport {act} from 'react-dom/test-utils';\nconst {JSDOM} = require('jsdom');\nimport {useMap} from './program';\nconst chai = require('chai');\nconst {expect} = chai;\n\nlet rootContainer;\nlet mapControls;\nlet renderCount;\n\nconst resetDom = () => {\n  const dom = new JSDOM({\n    url: 'http://localhost:3000',\n    resources: 'usable',\n    pretendToBeVisual: true,\n  });\n\n  global.document = dom.window.document;\n  global.window = dom.window;\n\n  for (const [key, value] of Object.entries(React)) {\n    global[key] = value;\n  }\n\n  delete require.cache[require.resolve('./program.js')];\n  require('./program.js');\n\n  rootContainer = document.createElement('div');\n  document.body.appendChild(rootContainer);\n  mapControls = undefined;\n  renderCount = 0;\n};\n\n/* ---------------------------------- *\n * ----- BROWSER TESTING SET-UP ----- *\n * ---------------------------------- */\n\nfunction TestComponent({initialValue}) {\n  mapControls = useMap(initialValue);\n  const [rerender, setRerender] = useState(true);\n  renderCount++;\n  return (\n    <div>\n      <button id=\"rerender\" onClick={() => setRerender(!rerender)}>Rerender</button>\n    </div>\n  );\n}\n\ndescribe('useMap', () => {\n  beforeEach(() => {\n    resetDom();\n  });\n\n  it('creates an empty map on mount', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n    expect(mapControls.map instanceof Map).to.be.true;\n    expect(mapControls.map.size).to.equal(0);\n  });\n\n  it('map can have an initialValue', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent initialValue={[\n        ['abc', 123],\n        [456, 'def'],\n      ]} />, rootContainer);\n    });\n    expect(mapControls.map instanceof Map).to.be.true;\n    expect(mapControls.map.size).to.equal(2);\n    expect(mapControls.map.get('abc')).to.equal(123);\n    expect(mapControls.map.get(456)).to.equal('def');\n  });\n\n  it('set function adds a value to the map', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n    mapControls.set(123, 'abc');\n    expect(mapControls.map.size).to.equal(1);\n    expect(mapControls.map.get(123)).to.equal('abc');\n  });\n\n  it('multiple values can be added the map and overriden', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n    mapControls.set(123, 'abc');\n    expect(mapControls.map.size).to.equal(1);\n    expect(mapControls.map.get(123)).to.equal('abc');\n\n    mapControls.set(456, 'def');\n    mapControls.set('abc', true);\n    expect(mapControls.map.size).to.equal(3);\n    expect(mapControls.map.get(456)).to.equal('def');\n    expect(mapControls.map.get('abc')).to.be.true;\n\n    mapControls.set(123, 'test');\n    expect(mapControls.map.size).to.equal(3);\n    expect(mapControls.map.get(123)).to.equal('test');\n  });\n\n  it('values can be deleted from the map', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n    mapControls.set(123, 'abc');\n    mapControls.set(456, 'def');\n    mapControls.delete(456);\n    expect(mapControls.map.size).to.equal(1);\n    expect(mapControls.map.get(123)).to.equal('abc');\n    expect(mapControls.map.get(456)).to.be.undefined;\n  });\n\n  it('clear empties out the map', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n    mapControls.set(123, 'abc');\n    mapControls.set(456, 'def');\n    mapControls.clear();\n    expect(mapControls.map.size).to.equal(0);\n    mapControls.set(123, 'abc');\n    expect(mapControls.map.size).to.equal(1);\n    mapControls.clear();\n    expect(mapControls.map.size).to.equal(0);\n    mapControls.set(123, 'abc');\n    mapControls.set(456, 'def');\n    mapControls.set('abc', true);\n    mapControls.set('def', false);\n    expect(mapControls.map.size).to.equal(4);\n    mapControls.clear();\n    expect(mapControls.map.size).to.equal(0);\n  });\n\n  it('set, delete and clear functions are static', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n    const savedControls = [mapControls.set, mapControls.delete, mapControls.clear];\n    mapControls.set(123, 'abc');\n    mapControls.clear();\n    mapControls.set(456, 'def');\n    mapControls.delete(456);\n    mapControls.set('abc', true);\n    act(() => {\n      document.getElementById('rerender').click();\n    });\n    expect([mapControls.set, mapControls.delete, mapControls.clear]).to.deep.equal(savedControls);\n  });\n\n  it('set, delete and clear functions each cause a single rerender', () => {\n    act(() => {\n      ReactDOM.render(<TestComponent />, rootContainer);\n    });\n    mapControls.set(123, 'abc');\n    mapControls.clear();\n    mapControls.set(456, 'def');\n    mapControls.delete(456);\n    mapControls.set('abc', true);\n    expect(renderCount).to.equal(6);\n  });\n\n  it('hook can be used multiple times', () => {\n    let mapControls1;\n    let mapControls2;\n\n    function LocalTestComponent() {\n      mapControls1 = useMap();\n      mapControls2 = useMap([[123, 'test']]);\n      const [rerender, setRerender] = useState(true);\n\n      return (\n        <div>\n          <button id=\"rerender\" onClick={() => setRerender(!rerender)}>Rerender</button>\n        </div>\n      );\n    }\n\n    act(() => {\n      ReactDOM.render(<LocalTestComponent />, rootContainer);\n    });\n\n    expect(mapControls1.map).to.not.equal(mapControls2);\n    expect(mapControls1.map.size).to.equal(0);\n    expect(mapControls2.map.size).to.equal(1);\n    expect(mapControls2.map.get(123)).to.equal('test');\n\n    const savedControls1 = [mapControls1.set, mapControls1.delete, mapControls1.clear];\n    const savedControls2 = [mapControls2.set, mapControls2.delete, mapControls2.clear];\n\n    act(() => {\n      document.getElementById('rerender').click();\n    });\n\n    expect([mapControls1.set, mapControls1.delete, mapControls1.clear]).to.deep.equal(savedControls1);\n    expect([mapControls2.set, mapControls2.delete, mapControls2.clear]).to.deep.equal(savedControls2);\n\n    mapControls1.set(123, 'abc');\n    expect(mapControls1.map.get(123)).to.equal('abc');\n    expect(mapControls2.map.get(123)).to.equal('test');\n\n    mapControls2.delete(123);\n    expect(mapControls1.map.get(123)).to.equal('abc');\n    expect(mapControls2.map.get(123)).to.be.undefined;\n\n    mapControls1.set(456, true);\n    mapControls2.set('abc', false);\n    mapControls2.set('def', 0);\n    expect(mapControls1.map.size).to.equal(2);\n    expect(mapControls2.map.size).to.equal(2);\n\n    mapControls2.clear();\n    expect(mapControls1.map.size).to.equal(2);\n    expect(mapControls2.map.size).to.equal(0);\n\n    mapControls1.clear();\n    expect(mapControls1.map.size).to.equal(0);\n    expect(mapControls2.map.size).to.equal(0);\n  });\n});\n"
+            }
+        },
+        "spaceTime": "",
+        "submissionStatistics": {
+            "correctCount": 889,
+            "failureCount": 227
+        },
+        "testStrategy": "SANDBOX_ONLY",
+        "tests": [],
+        "uid": "useMap",
+        "version": 0,
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "740846693"
+        },
+        "visualization": {
+            "inputType": null,
+            "outputType": null
+        }
+    },
+    "difficulty": 0,
+    "instructor": "Conner Ardman",
+    "name": "useMap",
+    "releaseDate": "2022-09-10T00:00:00Z",
+    "type": "CODING_STANDARD",
+    "uid": "useMap"
+}

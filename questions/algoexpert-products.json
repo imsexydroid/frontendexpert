@@ -1,0 +1,70 @@
+{
+    "acl": {
+        "isAvailable": true,
+        "isFree": false,
+        "isFreeForStudents": false,
+        "productRequired": [
+            "frontendexpert"
+        ]
+    },
+    "category": "CSS",
+    "contents": {
+        "acl": {
+            "isAvailable": true,
+            "isFree": false,
+            "isFreeForStudents": false,
+            "productRequired": [
+                "frontendexpert"
+            ]
+        },
+        "category": "CSS",
+        "hints": [
+            "<p>\n  This problem can be solved with either flexbox or grid. That said,\n  flexbox is likely easier, because the elements are not lined up in evenly sized\n  columns.\n</p>",
+            "<p>\n  The <span>order</span> property can be added to any flex item to change its\n  order relative to other flex items. All items default to an order value of\n  <span>0</span>, and ties are resolved based on the order in the DOM.\n</p>",
+            "<p>\n  The <span>flex-wrap</span> property can be set to <span>wrap</span> on a\n  flex container to allow items to go to new lines when they run out of space.\n</p>",
+            "<p>\n  The <span>align-self</span> property can be added to any flex item to change\n  its alignment on the cross-axis and override the <span>align-items</span>\n  property of the flex container.\n</p>",
+            "<p>\n  The <span>flex-grow</span> property can be added to any flex item to allow\n  it to fill up any remaining space along the main-axis. If multiple elements\n  have a positive <span>flex-grow</span> value, they will take up the extra\n  space proportionally to their grow values.\n</p>"
+        ],
+        "languageToWrite": "css",
+        "name": "AlgoExpert Products",
+        "notes": "",
+        "prompt": "<div class=\"html\">\n  <p>\n    You're given an HTML file containing divs representing AlgoExpert's\n    products. Using only CSS, align the products in three rows following these\n    specifications:\n  </p>\n  <ul>\n    <li>\n      The first row contains SystemsExpert and MLExpert, in that order.\n      <ul style=\"margin-top: 10px\">\n        <li>\n          SystemsExpert has a width of 50% of the width of the container,\n          MLExpert has a width of 30% of the width of the container, and all of\n          the remaining horizontal space is between them.\n        </li>\n        <li>\n          MLExpert has a height of 75px, and SystemsExpert is vertically\n          centered in the row.\n        </li>\n      </ul>\n    </li>\n    <li>\n      The second row contains just AlgoExpert, which has a width of 75% of the\n      width of the container and is horizontally centered.\n    </li>\n    <li>\n      The third row contains FrontendExpert and ProgrammingExpert, in that\n      order.\n      <ul style=\"margin-top: 10px\">\n        <li>\n          FrontendExpert has a width of 40% of the width of the container, and\n          ProgrammingExpert takes up any remaining horizontal space, leaving\n          10px between the two products.\n        </li>\n        <li>\n          ProgrammingExpert has a height of 75px, and FrontendExpert hugs the\n          bottom of the row.\n        </li>\n      </ul>\n    </li>\n    <li>The three rows have 24px of vertical spacing between them.</li>\n    <li>\n      All other styles are either browser-default styles or styles from the\n      starting code.\n    </li>\n  </ul>\n  <p>\n    Your submission will be assessed based on how similar your\n    <b>Browser Output</b> is to the <b>Expected Output</b>; it should be nearly\n    identical.\n  </p>\n</div>",
+        "promptCode": {
+            "html": "<div id=\"wrapper\">\n  <div class=\"product\" id=\"algo-expert\">AlgoExpert</div>\n  <div class=\"product\" id=\"systems-expert\">SystemsExpert</div>\n  <div class=\"product\" id=\"ml-expert\">MLExpert</div>\n  <div class=\"product\" id=\"frontend-expert\">FrontendExpert</div>\n  <div class=\"product\" id=\"programming-expert\">ProgrammingExpert</div>\n</div>"
+        },
+        "reactConfig": null,
+        "solutions": {
+            "css": [
+                "/* Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved. */\n\n#wrapper {\n  display: flex;\n  justify-content: space-between;\n  align-content: space-between;\n  flex-wrap: wrap;\n  gap: 24px 10px;\n}\n\n#algo-expert {\n  order: 2;\n  flex-basis: 75%;\n  margin: auto;\n  background-color: #626ee3;\n}\n\n#systems-expert {\n  flex-basis: 50%;\n  align-self: center;\n  background-color: #890023;\n}\n\n#ml-expert {\n  height: 75px;\n  flex-basis: 30%;\n  background-color: #f37f1b;\n}\n\n#frontend-expert {\n  order: 3;\n  flex-basis: 40%;\n  align-self: flex-end;\n  background-color: #11967e;\n}\n\n#programming-expert {\n  height: 75px;\n  order: 4;\n  flex-grow: 1;\n  background-color: #f21b3f;\n}\n\n.product {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  height: 50px;\n  color: white;\n  font-weight: bold;\n}",
+                "/* Copyright \u00a9 2023 AlgoExpert LLC. All rights reserved. */\n\n#wrapper {\n  display: grid;\n  grid-template-areas:\n    \"systems systems . ml\"\n    \"algo algo algo algo\"\n    \"frontend programming programming programming\";\n  grid-template-columns: 40fr 10fr 20fr 30fr;\n  row-gap: 24px;\n}\n\n#algo-expert {\n  width: 75%;\n  margin: auto;\n  grid-area: algo;\n  background-color: #626ee3;\n}\n\n#systems-expert {\n  grid-area: systems;\n  align-self: center;\n  background-color: #890023;\n}\n\n#ml-expert {\n  height: 75px;\n  grid-area: ml;\n  background-color: #f37f1b;\n}\n\n#frontend-expert {\n  grid-area: frontend;\n  align-self: end;\n  background-color: #11967e;\n}\n\n#programming-expert {\n  height: 75px;\n  margin-left: 10px;\n  grid-area: programming;\n  background-color: #f21b3f;\n}\n\n.product {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  height: 50px;\n  color: white;\n  font-weight: bold;\n}"
+            ]
+        },
+        "startingCode": {
+            "css": "/*  Write your code here. */\n\n#algo-expert {\n  /*  Write your code here. */\n  background-color: #626ee3;\n}\n\n#systems-expert {\n  /*  Write your code here. */\n  background-color: #890023;\n}\n\n#ml-expert {\n  /*  Write your code here. */\n  background-color: #f37f1b;\n}\n\n#frontend-expert {\n  /*  Write your code here. */\n  background-color: #11967e;\n}\n\n#programming-expert {\n  /*  Write your code here. */\n  background-color: #f21b3f;\n}\n\n.product {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  height: 50px;\n  color: white;\n  font-weight: bold;\n}"
+        },
+        "submissionStatistics": {
+            "correctCount": 2215,
+            "failureCount": 2216
+        },
+        "testHarness": {
+            "sandboxCode": "",
+            "unitTests": ""
+        },
+        "testStrategy": "SCREENSHOT",
+        "uid": "algoexpert-products",
+        "video": {
+            "annotations": [],
+            "codeWalkthroughTime": null,
+            "duration": 0,
+            "instructor": "Conner Ardman",
+            "overviewTime": null,
+            "vimeoId": "661482018"
+        }
+    },
+    "difficulty": null,
+    "instructor": "Conner Ardman",
+    "name": "AlgoExpert Products",
+    "releaseDate": "2022-01-01T00:00:00Z",
+    "type": "CODING_FRONTEND",
+    "uid": "algoexpert-products"
+}
